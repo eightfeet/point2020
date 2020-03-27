@@ -1,0 +1,1 @@
+## A simple launcher by webpack ES6 jest
