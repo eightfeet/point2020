@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Modal</title>
+    <title>Points</title>
     <style>
         .wrap {
             text-align:center; padding-top: 20px
@@ -25,19 +25,34 @@
         #indom {
             position:relative; width:320px; height:500px; font-size: 11px; margin: 0 auto
         }
+        input {
+            border: 1px solid #ccc
+        }
     </style>
 </head>
 <body>
     <div class="wrap">
         <div id="example1">test</div>
     </div>
-    <div style="height: 2000px"></div>
+    1
+    <input id="phone" type="tel" />
+    <div id="divphone"></div>
+    <input id="verificationCode" type="tel" />
+    <div id="divverificationCode"></div>
+    <input id="securityCode" type="text" />
+    <div id="divsecurityCode"></div>
+
+    2
+    <input id="phone2" type="tel" />
+    <div id="divphone2"></div>
+    <input id="verificationCode2" type="tel" />
+    <div id="divverificationCode2"></div>
+    <input id="securityCode2" type="text" />
+    <div id="divsecurityCode2"></div>
 </body>
 <script>
-    var btn1 = document.getElementById('example1');
-    btn1.addEventListener('click', function(){
-        console.log(1111,222);
-    })
+    var point = new ___Points___();
+    point.reset({phone: 'phone', verificationCode: 'verificationCode', securityCode: 'securityCode'});
 
 </script>
 </html>
