@@ -4,6 +4,7 @@ import { nodeMap } from './../template';
 import { createTemplate, intercept, eventListener, isObject, removeListener, validateParame } from './../helper';
 import { qrCode } from './../../utils/scan';
 import { accurePoints, sendValidateCode, bindingPhone } from '~/api';
+import Modal from '@eightfeet/modal';
 
 // data;
 const data = {
@@ -44,7 +45,13 @@ class Points {
 		this.target = document.getElementById(config.targetId) || document.body;
 		// 模块ID
 		this.id = config.id || pointsId;
+		this.message = new Modal({
+			id: `${this.id}-message`, // 所创建弹窗的id 不传可自动生成id（modal + 时间戳 + 100以内的随机数）
+			closable: false // modal是否可关闭 默认true
+		});
 	}
+
+	static Modal = Modal
 
 	/**
 	 * 重置数据代理与监听
@@ -165,6 +172,9 @@ class Points {
 		});
 
 		if (error) {
+			this.message.create({
+				article: error
+			}).then(() => console.log('弹窗已打开'));
 			console.log(error);
 			return;
 		}
