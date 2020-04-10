@@ -3,40 +3,40 @@
     padding: 20px;
     button,
     input {
-    /* table elements 表格元素 */
-    margin: 0;
-    padding: 0;
-    border: none;
-    color: #404040;
-    box-sizing: border-box;
-  }
+      /* table elements 表格元素 */
+      margin: 0;
+      padding: 0;
+      border: none;
+      color: #404040;
+      box-sizing: border-box;
+    }
 
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    margin: 0;
-    -webkit-appearance: none !important;
-  }
-  input[type="button"],
-  input[type="submit"],
-  input[type="reset"],
-  input[type="text"],
-  input[type="tel"] {
-    -webkit-appearance: none;
-  }
-  textarea {
-    -webkit-appearance: none;
-  }
-  input:focus,
-  button:focus {
-    outline: 0;
-  }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      margin: 0;
+      -webkit-appearance: none !important;
+    }
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    input[type="text"],
+    input[type="tel"] {
+      -webkit-appearance: none;
+    }
+    textarea {
+      -webkit-appearance: none;
+    }
+    input:focus,
+    button:focus {
+      outline: 0;
+    }
   }
 
   .by-health-points-phone-item,
   .by-health-points-verificationcode-item,
   .by-health-points-verificationcode-item,
-  .by-health-points-securitycode-item,
-  .by-health-points-securitycode-item,
+  .by-health-points-antifakecode-item,
+  .by-health-points-antifakecode-item,
   .by-health-points-submit-item {
     padding: 10px;
     background-color: #aaa;

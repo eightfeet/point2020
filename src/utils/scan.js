@@ -3,23 +3,18 @@ import { scanQrCode, scanBarCode, isApp } from '@byhealth/native-app-jssdk';
 /**
    * 判断是否为微信小程序
    * @export
-   * @returns 0：浏览器，1: 微信，2：小程序, 3: 营养管家App
+   * @returns 0：浏览器，1: 微信，2:小程序, 3: 营养管家App
    */
 export function checkEnv() {
 	if (isApp()) return 3;
-    
 	const ua = window.navigator.userAgent.toLowerCase();
-	if (ua.indexOf('micromessenger') === -1) {
-		return 0;
+	if (ua.indexOf('miniprogram') !== -1) {
+		return 2;
 	}
-    
-	window.wx.miniProgram.getEnv((res) => {
-		if (res.miniprogram) {
-			return 2;
-		}
-        
+	if (ua.indexOf('micromessenger') !== -1) {
 		return 1;
-	});
+	}
+	return 0;
 }
 
 export function qrCode() {

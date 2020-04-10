@@ -1,13 +1,15 @@
 
+import validate from 'validate-by-health';
 import { nodeMap } from './../template';
-import { createTemplate, intercept, eventListener, isObject, removeListener } from './../helper';
+import { createTemplate, intercept, eventListener, isObject, removeListener, validateParame } from './../helper';
 import { qrCode } from './../../utils/scan';
+import { accurePoints, sendValidateCode, bindingPhone } from '~/api';
 
 // data;
 const data = {
 	phone: null,
 	verificationCode: null,
-	securityCode: null
+	antiFakeCode: null
 };
 
 // 承接中间数据
@@ -26,6 +28,10 @@ class Points {
 		this.data = null;
 		this.listenerHistory = null;
 		this.elementNodeMappingField = nodeMap;
+		// 验证手机
+		this.verifyPhone = true;
+		// 绑定手机
+		this.bindPhone = false;
 		this.disabledPhone = config.disabledPhone || false;
 		if (isObject(config.elementIdMapToFields)) {
 			this.elementNodeMappingField = config.elementIdMapToFields;
@@ -44,7 +50,12 @@ class Points {
 	 */
 	reset = () =>{
 		if (!isCustomTemplate) {
-			createTemplate(this.id, this.target, this.disabledPhone, this.elementNodeMappingField);
+			createTemplate(
+				this.id,
+				this.target,
+				this.disabledPhone,
+				this.verifyPhone
+			);
 		}
 		this.setEvent();
 		this.data = Object.create(data);
@@ -75,27 +86,83 @@ class Points {
 		});
 	}
 
-	mapElementIdToFields = () => {
-
-	}
 	/**
 	 * 扫码
 	 */
 	scan = () => {
 		qrCode()
+			.then(res => {
+				this.data.antiFakeCode = res;
+			})
 			.catch(err => console.log(err));
 	}
+
 	/**
 	 * 提交
 	 */
 	submit = () => {
-		console.log('tijiao');
+		const {phone, antiFakeCode, verificationCode, openid, ...other } = this.data;
+
+		Promise.resolve()
+			.then(() => {
+				// 参数验证
+				const errorMessage = validateParame(
+					data,
+					{
+						verifyPhone: this.verifyPhone,
+						bindPhone: this.bindPhone
+					}
+				);
+				// 处理验证结果
+				if (errorMessage) {
+					return Promise.reject({message: errorMessage});
+				}
+			})
+			.then(() => {
+				// 验证手机
+				if (this.verifyPhone) {
+					return bindingPhone({
+						validateCode: verificationCode,
+						phone
+					});
+				}
+				// 绑定手机
+				if (this.bindPhone) {
+					return bindingPhone({
+						validateCode: verificationCode,
+						phone,
+						openid
+					});
+				}
+			})
+			.then(() => {
+				// 防伪积分
+				return accurePoints({
+					mobilePhone: phone,
+					antifakecode: antiFakeCode,
+					...other
+				});
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
+
 	/**
 	 * 获取验证码
 	 */
 	sendVerificationCode = () => {
+		const { phone } = this.data;
+		const error = validate({
+			VPhone: phone
+		});
+
+		if (error) {
+			console.log(error);
+			return;
+		}
 		console.log('获取验证码');
+		sendValidateCode(phone);
 	}
 }
 

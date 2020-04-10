@@ -7,7 +7,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "rm -rf ./dist && webpack --mode=production",
+    "build:uat": "rm -rf ./dist && webpack --mode=production --isuat=true",
     "start": "webpack-dev-server --mode development --inline --hot",
     "prepublish": "rm -rf ./dist && yarn build",
     "test": "jest --watchAll"

@@ -1,1 +1,32 @@
-<!doctype html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Points</title></head><body><div class="wrap"></div><script type="text/javascript" src="/points.js?348c3e7b219c554b6973"></script></body><script>var point=new ___Points___;point.reset()</script></html>
+<!doctype html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Points</title><script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script><script>function wechatAuth(data) {
+            return fetch('https://yyj-test.by-health.com/scrm/wechatBH/jssdk', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'url=' + window.location.href + '&appId=wxdadf1deb1e480d13'
+            }).then(res => {
+                if (res.status !== 200) {
+                    throw res;
+                }
+                return res.json();
+            });
+        }
+    
+        function initWechat() {
+            wechatAuth().then(function (res) {
+                var data = res;
+                var url = window.location.href;
+                window.wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: data.appId, // 必填，公众号的唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: data.signature,// 必填，签名
+                    jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
+                });
+            }).catch(function (err) {
+                console.log('微信授权失败', err);
+                // document.getElementById('QrDom').style.display = 'none'
+            });
+        }</script></head><body><div class="wrap"><div style="padding:10px;background:#aaa"><input id="idphone"> <input id="idvcode"></div></div><script type="text/javascript" src="./points.js?bbb2683850bdeb06c55e"></script></body><script>var point=new ___Points___({disabledPhone:!0});point.reset(),initWechat()</script></html>

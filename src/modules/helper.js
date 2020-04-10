@@ -1,12 +1,14 @@
 import createHtml from './template';
+import validate from 'validate-by-health';
 
 /**
  * 创建默认模板
  * @param {String} id 模板elementId
  * @param { HTMLElement } target 目标挂载
- * @param { Boolean } phoneDisable 禁用手机
+ * @param { Boolean } disabledPhone 禁用手机
+ * @param { Boolean } verifyPhone 是否验证手机
  */
-export const createTemplate = (id, target, phoneDisable, elementNodeMappingField) => {
+export const createTemplate = (id, target, disabledPhone, verifyPhone) => {
 	let div = target.querySelector(`#${id}`);
 	// 没有rootNode时创建一个
 	if (!div) {
@@ -15,7 +17,7 @@ export const createTemplate = (id, target, phoneDisable, elementNodeMappingField
 		target.appendChild(div);
 	}
 	// 重定rootNode内容注入模板
-	div.innerHTML = createHtml(phoneDisable, elementNodeMappingField);
+	div.innerHTML = createHtml(disabledPhone, verifyPhone);
 };
 
 
@@ -120,4 +122,29 @@ export const removeListener = (listenerHistory) => {
 	const { input, click } = listenerHistory;
 	if (input) document.body.removeEventListener('input', input);
 	if (click) document.body.removeEventListener('click', click);
+};
+
+/**
+ * 验证提交参数
+ * @param {Object} params 提交参数
+ */
+export const validateParame = (params, condition) => {
+	const { verifyPhone, bindPhone } = condition;
+	const { phone, antiFakeCode, verificationCode, openid} = params;
+
+	const VData = {
+		VSecurityCode: antiFakeCode,
+		VPhone: phone
+	};
+
+	if (bindPhone) {
+		VData.VRequire = [verificationCode, '请填写正确手机验证码', 4];
+		VData.VRequire = [openid, '没有openid'];
+	}
+
+	if (verifyPhone) {
+		VData.VRequire = [verificationCode, '请填写正确手机验证码', 4];
+	}
+
+	return validate(VData);
 };

@@ -16,6 +16,9 @@
       }
     },
     "globals": {
+      "__PRO__": true,
+      "__UAT__": true,
+      "__DEV__": true
     },
     "rules": {
 			"jest/no-disabled-tests": "warn",
