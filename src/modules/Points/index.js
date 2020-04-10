@@ -29,16 +29,20 @@ class Points {
 		this.listenerHistory = null;
 		this.elementNodeMappingField = nodeMap;
 		// 验证手机
-		this.verifyPhone = true;
+		this.verifyPhone = false;
 		// 绑定手机
-		this.bindPhone = false;
+		this.bindPhone = true;
 		this.disabledPhone = config.disabledPhone || false;
+		// 自定义表单输入元素
 		if (isObject(config.elementIdMapToFields)) {
 			this.elementNodeMappingField = config.elementIdMapToFields;
 			isCustomTemplate = true;
 		}
+		// 定义防伪积分接口
 		this.http = config.http || 'http://www.baidu.com';
+		// 挂载Dom
 		this.target = document.getElementById(config.targetId) || document.body;
+		// 模块ID
 		this.id = config.id || pointsId;
 	}
 
@@ -54,7 +58,7 @@ class Points {
 				this.id,
 				this.target,
 				this.disabledPhone,
-				this.verifyPhone
+				(this.verifyPhone || this.bindPhone)
 			);
 		}
 		this.setEvent();
@@ -119,19 +123,22 @@ class Points {
 				}
 			})
 			.then(() => {
-				// 验证手机
-				if (this.verifyPhone) {
-					return bindingPhone({
-						validateCode: verificationCode,
-						phone
-					});
-				}
-				// 绑定手机
+				// 绑定手机(优先！)
 				if (this.bindPhone) {
+					console.log(777788888);
 					return bindingPhone({
 						validateCode: verificationCode,
 						phone,
 						openid
+					});
+				}
+
+				// 验证手机
+				if (this.verifyPhone) {
+					console.log(99990000);
+					return bindingPhone({
+						validateCode: verificationCode,
+						phone
 					});
 				}
 			})

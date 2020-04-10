@@ -138,8 +138,8 @@ export const validateParame = (params, condition) => {
 	};
 
 	if (bindPhone) {
-		VData.VRequire = [verificationCode, '请填写正确手机验证码', 4];
-		VData.VRequire = [openid, '没有openid'];
+		VData.VRequire_verificationCode = [verificationCode, '请填写正确手机验证码', 4];
+		VData.VRequire_openid = [openid, '没有openid'];
 	}
 
 	if (verifyPhone) {
