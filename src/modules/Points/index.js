@@ -1,7 +1,7 @@
 
 import validate from 'validate-by-health';
 import { nodeMap } from './../template';
-import { createTemplate, intercept, eventListener, isObject, removeListener, validateParame } from './../helper';
+import { createTemplate, intercept, eventListener, isObject, removeListener, validateParame, timerCounter } from './../helper';
 import { qrCode } from './../../utils/scan';
 import { accurePoints, sendValidateCode, bindingPhone } from '~/api';
 import Modal from '@eightfeet/modal';
@@ -20,6 +20,7 @@ const dataTemp = {};
 const pointsId = `by-health-points-${(new Date()).getTime()}-${window.Math.floor(window.Math.random()*100)}`;
 
 let isCustomTemplate = false;
+
 
 /**
  * 积分模块
@@ -204,6 +205,17 @@ class Points {
 		sendValidateCode(phone)
 			.then(() => {
 				this.loading.hide();
+				const element = document.getElementById(this.elementNodeMappingField.sendVerificationCode);
+				if (element) {
+					timerCounter(element);
+				}
+			})
+			.catch(err => {
+				this.loading.hide();
+				this.message.create({
+					article: err.message
+				}).then(() => console.log('弹窗已打开'));
+				console.log(err);
 			});
 	}
 }

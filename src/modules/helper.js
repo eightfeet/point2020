@@ -148,3 +148,29 @@ export const validateParame = (params, condition) => {
 
 	return validate(VData);
 };
+
+/**
+ * 60s倒计时
+ * @param {HTMLElement} element
+ */
+export const timerCounter = element => {
+	let counter = 60;
+	let timer = null;
+	const fn = () => {
+		counter--;
+		element.setAttribute('disabled', true);
+		element.innerHTML = `${counter}秒后重试`;
+		if (counter > 0) {
+			window.clearTimeout(timer);
+			timer = setTimeout(() => {
+				fn();
+			}, 1000);
+		} else {
+			element.removeAttribute('disabled');
+			element.innerHTML = '获取验证码';
+			return;
+		}
+	};
+
+	fn();
+};

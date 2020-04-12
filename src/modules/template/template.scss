@@ -24,7 +24,9 @@
 
 #sendVerificationCode {
     font-weight: normal;
-
+    &:disabled {
+        opacity: 0.2;
+    }
 }
 
 #submit {
