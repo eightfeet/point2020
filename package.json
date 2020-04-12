@@ -51,6 +51,8 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
+    "@byhealth/native-app-jssdk": "^2.5.0",
+    "@eightfeet/modal": "^2.0.0",
     "autoprefix": "^1.0.1",
     "inline-style-prefixer": "^5.1.0",
     "jss-camel-case": "^6.1.0",

@@ -41,4 +41,18 @@
     padding: 10px;
     background-color: #aaa;
   }
+
+  .by-health-points-message_close{
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 1rem;
+    line-height: 1.5rem;
+    text-align: center;
+    right: -2rem !important;
+    &::before {
+      content: '\2715';
+      color: #fff;
+    }
+  }
 }

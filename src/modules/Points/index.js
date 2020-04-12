@@ -16,7 +16,7 @@ const data = {
 // 承接中间数据
 const dataTemp = {};
 
-const pointsId = `points${(new Date()).getTime()}-${window.Math.floor(window.Math.random()*100)}`;
+const pointsId = `by-health-points-${(new Date()).getTime()}-${window.Math.floor(window.Math.random()*100)}`;
 
 let isCustomTemplate = false;
 
@@ -46,8 +46,11 @@ class Points {
 		// 模块ID
 		this.id = config.id || pointsId;
 		this.message = new Modal({
-			id: `${this.id}-message`, // 所创建弹窗的id 不传可自动生成id（modal + 时间戳 + 100以内的随机数）
-			closable: false // modal是否可关闭 默认true
+			id: 'by-health-points-message',
+			style: {
+				close: {
+				}
+			}
 		});
 	}
 
@@ -158,6 +161,9 @@ class Points {
 				});
 			})
 			.catch(err => {
+				this.message.create({
+					article: err.message
+				}).then(() => console.log('弹窗已打开'));
 				console.log(err);
 			});
 	}

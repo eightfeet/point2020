@@ -124,7 +124,7 @@ module.exports = (env, argv) => {
 		devServer: {
 			contentBase: path.join(__dirname, 'src'),
 			compress: true,
-			port: 9090,
+			port: 9000,
 			host: 'localhost',
 			publicPath: '/',
 			historyApiFallback: true,
