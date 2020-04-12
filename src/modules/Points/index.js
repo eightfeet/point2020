@@ -5,6 +5,7 @@ import { createTemplate, intercept, eventListener, isObject, removeListener, val
 import { qrCode } from './../../utils/scan';
 import { accurePoints, sendValidateCode, bindingPhone } from '~/api';
 import Modal from '@eightfeet/modal';
+import Loading from '@eightfeet/loading';
 
 // data;
 const data = {
@@ -52,9 +53,23 @@ class Points {
 				}
 			}
 		});
+
+		this.loading = new Loading({
+			id: 'by-health-points-loading',
+			style: {
+				vertices: {
+					height: '0.5em',
+					width: '2px'
+				},
+				content: {
+					backgroundColor: 'rgba(0,0,0,0)'
+				}
+			}
+		});
 	}
 
 	static Modal = Modal
+	static Loading = Loading
 
 	/**
 	 * 重置数据代理与监听
@@ -185,7 +200,11 @@ class Points {
 			return;
 		}
 		console.log('获取验证码');
-		sendValidateCode(phone);
+		this.loading.show();
+		sendValidateCode(phone)
+			.then(() => {
+				this.loading.hide();
+			});
 	}
 }
 

@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@byhealth/native-app-jssdk": "^2.5.0",
+    "@eightfeet/loading": "^1.0.14",
     "@eightfeet/modal": "^2.0.0",
     "autoprefix": "^1.0.1",
     "inline-style-prefixer": "^5.1.0",
