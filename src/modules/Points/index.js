@@ -19,7 +19,7 @@ import Modal from '@eightfeet/modal';
 import Loading from '@eightfeet/loading';
 
 // data;
-const data = {
+let data = {
 	phone: null,
 	verificationCode: null,
 	antiFakeCode: null
@@ -38,6 +38,12 @@ let isCustomTemplate = false;
 class Points {
 	constructor(param){
 		const config = param || {};
+		if (isObject(config.data)) {
+			data = {
+				...data,
+				...config.data
+			};
+		}
 		// 当前参数数据
 		this.data = {};
 		// 历史监听方法
@@ -76,7 +82,6 @@ class Points {
 			prefix: config.timerCounterPrefixText || '',
 			suffix: config.timerCounterSuffixText || '秒后重试'
 		};
-		this.$data=data;
 	}
 
 	static Modal = Modal
@@ -249,7 +254,7 @@ class Points {
 export default Points;
 
 /**
- * parame
+ * data
  * elementIdMapToFields
  * phoneDisable
  
