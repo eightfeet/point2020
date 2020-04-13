@@ -7,6 +7,8 @@
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Points</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <script>
 
@@ -24,7 +26,7 @@
                 return res.json();
             });
         }
-    
+
         function initWechat() {
             wechatAuth().then(function (res) {
                 var data = res;
@@ -46,6 +48,11 @@
 </head>
 
 <body>
+        <pre>
+            <code class="language-javascript">
+                        if
+            </code>
+        </pre>
     <div id="aaa"></div>
     <div class="wrap">
         <div style="padding: 10px; background: #aaa;">
@@ -71,6 +78,14 @@
     });
     point.bind();
     initWechat();
+</script>
+<script>
+    hljs.initHighlightingOnLoad();
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+    });
 </script>
 
 </html>
