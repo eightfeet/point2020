@@ -8,6 +8,7 @@ import {
 	isObject,
 	removeListener,
 	validateParame,
+	backfill,
 	timerCounter
 } from './../helper';
 import {messageParame,
@@ -84,8 +85,18 @@ class Points {
 	/**
 	 * 重置数据代理与监听
 	 */
-	reset = (target) =>{
+	bind = (target, map) =>{
+		if (isObject(map)) {
+			isCustomTemplate = true;
+			this.elementNodeMappingField = {
+				...this.elementNodeMappingField,
+				...map
+			};
+		} else {
+			isCustomTemplate = false;
+		}
 		if (!isCustomTemplate) {
+			// 创建模板时数据直接写入到模板
 			createTemplate(
 				this.id,
 				(target || this.target),
@@ -94,6 +105,9 @@ class Points {
 				(this.verifyPhone || this.bindPhone),
 				this.data
 			);
+		} else {
+			// 自定义模板时需要根据映射关系回填数据
+			backfill(this.elementNodeMappingField, this.data);
 		}
 		this.setEvent();
 		this.data = Object.create(data);

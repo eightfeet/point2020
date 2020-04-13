@@ -9,17 +9,17 @@ import validate from 'validate-by-health';
  * @param { Boolean } verifyPhone 是否验证手机
  */
 export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone, data) => {
+	// 移除
+	const hasIdObject = document.getElementById(id);
+	if (hasIdObject) hasIdObject.parentNode.removeChild(hasIdObject);
+	// 创建
 	let div = target.querySelector(`#${id}`);
-	// 没有rootNode时创建一个
-	if (!div) {
-		div = document.createElement('div');
-		div.id = id;
-		target.appendChild(div);
-	}
+	div = document.createElement('div');
+	div.id = id;
+	target.appendChild(div);
 	// 重定rootNode内容注入模板
 	div.innerHTML = createHtml(disabledPhone, verifyPhone, hidePhone, data);
 };
-
 
 /**
  * 数据拦截与绑定
@@ -60,7 +60,7 @@ export const intercept = (data, elementNodeMappingField, dataTemp) =>  Object.ke
 export const eventListener = (data, elementNodeMappingField, operation) => {
 	const listener = {};
 	const {scan, sendVerificationCode, submit} = operation;
-
+	
 	listener.click = e => {
 		Object.keys(elementNodeMappingField).forEach(key => {
 			if (
@@ -117,6 +117,19 @@ export const eventListener = (data, elementNodeMappingField, operation) => {
 export const isObject = (data) => {
 	return Object.prototype.toString.call(data) === '[object Object]';
 };
+
+export const backfill = (elementNodeMappingField, data) => {
+	Object.keys(elementNodeMappingField).forEach(key => {
+		const id = document.getElementById(elementNodeMappingField[key]);
+		if (
+			id &&
+			id.tagName === 'INPUT'
+		) {
+			id.value = data[key];
+		}
+	});
+};
+
 
 
 /**
