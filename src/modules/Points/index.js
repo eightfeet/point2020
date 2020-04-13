@@ -1,7 +1,17 @@
 
 import validate from 'validate-by-health';
 import { nodeMap } from './../template';
-import { createTemplate, intercept, eventListener, isObject, removeListener, validateParame, timerCounter } from './../helper';
+import {
+	createTemplate,
+	intercept,
+	eventListener,
+	isObject,
+	removeListener,
+	validateParame,
+	timerCounter
+} from './../helper';
+import {messageParame,
+	loadingParame} from '~/config';
 import { qrCode } from './../../utils/scan';
 import { accurePoints, sendValidateCode, bindingPhone } from '~/api';
 import Modal from '@eightfeet/modal';
@@ -21,21 +31,26 @@ const pointsId = `by-health-points-${(new Date()).getTime()}-${window.Math.floor
 
 let isCustomTemplate = false;
 
-
 /**
  * 积分模块
  */
 class Points {
 	constructor(param){
 		const config = param || {};
-		this.data = null;
+		// 当前参数数据
+		this.data = {};
+		// 历史监听方法
 		this.listenerHistory = null;
+		// 映射关系
 		this.elementNodeMappingField = nodeMap;
 		// 验证手机
 		this.verifyPhone = false;
 		// 绑定手机
 		this.bindPhone = true;
+		// 禁止修改手机
 		this.disabledPhone = config.disabledPhone || false;
+		// 隐藏手机
+		this.hidePhone = config.hidePhone || false;
 		// 自定义表单输入元素
 		if (isObject(config.elementIdMapToFields)) {
 			this.elementNodeMappingField = config.elementIdMapToFields;
@@ -47,26 +62,19 @@ class Points {
 		this.target = document.getElementById(config.targetId) || document.body;
 		// 模块ID
 		this.id = config.id || pointsId;
-		this.message = new Modal({
-			id: 'by-health-points-message',
-			style: {
-				close: {
-				}
-			}
-		});
-
-		this.loading = new Loading({
-			id: 'by-health-points-loading',
-			style: {
-				vertices: {
-					height: '0.5em',
-					width: '2px'
-				},
-				content: {
-					backgroundColor: 'rgba(0,0,0,0)'
-				}
-			}
-		});
+		// 历史数据
+		this.prevData = {
+			request: null,
+			response: null
+		};
+		// 创建loading和message
+		this.message = new Modal(config.messageParame || messageParame);
+		this.loading = new Loading(config.loadingParame || loadingParame);
+		// 倒计时前后缀文字
+		this.timerCounterText = {
+			prefix: config.timerCounterPrefixText || '',
+			suffix: config.timerCounterSuffixText || '秒后重试'
+		};
 	}
 
 	static Modal = Modal
@@ -74,17 +82,16 @@ class Points {
 
 	/**
 	 * 重置数据代理与监听
-	 * 1、拦截处理数据
-	 * 2、移除历史监听数据
-	 * 3、监听并重新关联数据
 	 */
-	reset = () =>{
+	reset = (target) =>{
 		if (!isCustomTemplate) {
 			createTemplate(
 				this.id,
-				this.target,
+				(target || this.target),
 				this.disabledPhone,
-				(this.verifyPhone || this.bindPhone)
+				this.hidePhone,
+				(this.verifyPhone || this.bindPhone),
+				this.data
 			);
 		}
 		this.setEvent();
@@ -93,6 +100,9 @@ class Points {
 
 	/**
 	 * setEvent
+	 * 1、拦截处理数据
+	 * 2、移除历史监听数据
+	 * 3、监听并重新关联数据
 	 */
 	setEvent = () => {
 		let mapData = {};
@@ -132,7 +142,7 @@ class Points {
 	 */
 	submit = () => {
 		const {phone, antiFakeCode, verificationCode, openid, ...other } = this.data;
-
+		this.loading.show();
 		Promise.resolve()
 			.then(() => {
 				// 参数验证
@@ -151,7 +161,6 @@ class Points {
 			.then(() => {
 				// 绑定手机(优先！)
 				if (this.bindPhone) {
-					console.log(777788888);
 					return bindingPhone({
 						validateCode: verificationCode,
 						phone,
@@ -161,7 +170,6 @@ class Points {
 
 				// 验证手机
 				if (this.verifyPhone) {
-					console.log(99990000);
 					return bindingPhone({
 						validateCode: verificationCode,
 						phone
@@ -176,7 +184,9 @@ class Points {
 					...other
 				});
 			})
+			.then(() => this.loading.hide())
 			.catch(err => {
+				this.loading.hide();
 				this.message.create({
 					article: err.message
 				}).then(() => console.log('弹窗已打开'));
@@ -207,7 +217,7 @@ class Points {
 				this.loading.hide();
 				const element = document.getElementById(this.elementNodeMappingField.sendVerificationCode);
 				if (element) {
-					timerCounter(element);
+					timerCounter(element, this.timerCounterText);
 				}
 			})
 			.catch(err => {

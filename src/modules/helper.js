@@ -8,7 +8,7 @@ import validate from 'validate-by-health';
  * @param { Boolean } disabledPhone 禁用手机
  * @param { Boolean } verifyPhone 是否验证手机
  */
-export const createTemplate = (id, target, disabledPhone, verifyPhone) => {
+export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone, data) => {
 	let div = target.querySelector(`#${id}`);
 	// 没有rootNode时创建一个
 	if (!div) {
@@ -17,7 +17,7 @@ export const createTemplate = (id, target, disabledPhone, verifyPhone) => {
 		target.appendChild(div);
 	}
 	// 重定rootNode内容注入模板
-	div.innerHTML = createHtml(disabledPhone, verifyPhone);
+	div.innerHTML = createHtml(disabledPhone, verifyPhone, hidePhone, data);
 };
 
 
@@ -75,6 +75,12 @@ export const eventListener = (data, elementNodeMappingField, operation) => {
 						}
 						break;
 					case 'sendVerificationCode':
+						// 获取验证码需要操作按钮disable状态，同时不能和INPUT标签冲突，所以务必使用<button>标签
+						if (e.target.tagName !== 'BUTTON') {
+							throw (new TypeError(
+								`Invalid HTMLElement: Expected a 'BUTTON', got a '${e.target.tagName}'.`
+							));
+						}
 						// 创建点击监听发送验证码事件
 						if (typeof sendVerificationCode === 'function') {
 							sendVerificationCode();
@@ -99,7 +105,6 @@ export const eventListener = (data, elementNodeMappingField, operation) => {
 				e.target.tagName === 'INPUT'
 			) {
 				data[key] = e.target.value;
-				console.log(key, e.target.value);
 			}
 		});
 	};
@@ -151,15 +156,16 @@ export const validateParame = (params, condition) => {
 
 /**
  * 60s倒计时
- * @param {HTMLElement} element
+ * @param { HTMLElement } element,
+ * @param { Object } timerCounterText = { prefix, suffix } 时分秒前后缀
  */
-export const timerCounter = element => {
+export const timerCounter = (element, { prefix, suffix }) => {
 	let counter = 60;
 	let timer = null;
 	const fn = () => {
 		counter--;
 		element.setAttribute('disabled', true);
-		element.innerHTML = `${counter}秒后重试`;
+		element.innerHTML = `${prefix}${counter}${suffix}`;
 		if (counter > 0) {
 			window.clearTimeout(timer);
 			timer = setTimeout(() => {
