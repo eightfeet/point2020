@@ -23,7 +23,7 @@ export default (disabledPhone, verifyPhone, hidePhone, data) =>{
         </div>`}
         ${verifyPhone ? `<div class="${prefix}-verificationcode-item">
             <input class="${prefix}-verificationcode" type="tel" id="${s.verificationCode}"  value="${data.verificationCode || ''}" maxlength="4" placeholder="输入验证码" />
-            <button class="${prefix}-button-sendverificationcode" id="${s.sendVerificationCode}">获取验证码</button>
+            <div class="${prefix}-button-sendverificationcode" id="${s.sendVerificationCode}">获取验证码</div>
         </div>` : ''}
         <div class="${prefix}-submit-item">
             <button class="${prefix}-button-submit" id="${s.submit}">提交</button>

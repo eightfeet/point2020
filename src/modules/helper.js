@@ -136,7 +136,6 @@ export const removeListener = (listenerHistory) => {
 export const validateParame = (params, condition) => {
 	const { verifyPhone, bindPhone } = condition;
 	const { phone, antiFakeCode, verificationCode, openid} = params;
-
 	const VData = {
 		VSecurityCode: antiFakeCode,
 		VPhone: phone

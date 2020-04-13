@@ -75,6 +75,7 @@ class Points {
 			prefix: config.timerCounterPrefixText || '',
 			suffix: config.timerCounterSuffixText || '秒后重试'
 		};
+		this.$data=data;
 	}
 
 	static Modal = Modal
@@ -147,7 +148,7 @@ class Points {
 			.then(() => {
 				// 参数验证
 				const errorMessage = validateParame(
-					data,
+					this.data,
 					{
 						verifyPhone: this.verifyPhone,
 						bindPhone: this.bindPhone
@@ -184,6 +185,7 @@ class Points {
 					...other
 				});
 			})
+
 			.then(() => this.loading.hide())
 			.catch(err => {
 				this.loading.hide();
