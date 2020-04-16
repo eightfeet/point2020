@@ -17,6 +17,7 @@ import { qrCode } from './../../utils/scan';
 import { accurePoints, sendValidateCode, bindingPhone } from '~/api';
 import Modal from '@eightfeet/modal';
 import Loading from '@eightfeet/loading';
+import handleErrorCode from './../handleErrorCode';
 
 // data;
 let data = {
@@ -53,7 +54,8 @@ class Points {
 		// 验证手机
 		this.verifyPhone = false;
 		// 绑定手机
-		this.bindPhone = true;
+		this.bindPhone = false;
+		this.errorCode = config.errorCode;
 		// 禁止修改手机
 		this.disabledPhone = config.disabledPhone || false;
 		// 隐藏手机
@@ -86,6 +88,18 @@ class Points {
 
 	static Modal = Modal
 	static Loading = Loading
+
+	/**
+	 * 设置参数
+	 */
+	setData = (data) => {
+		if (isObject(data)) {
+			Object.keys(data).forEach(key => {
+				this.data[key] = data[key];
+			});
+		}
+	}
+	
 
 	/**
 	 * 重置数据代理与监听
@@ -161,7 +175,7 @@ class Points {
 	 * 提交
 	 */
 	submit = () => {
-		const {phone, antiFakeCode, verificationCode, openid, ...other } = this.data;
+		const {phone, antiFakeCode, verificationCode, openid, accountType, ...other } = this.data;
 		this.loading.show();
 		Promise.resolve()
 			.then(() => {
@@ -184,6 +198,7 @@ class Points {
 					return bindingPhone({
 						validateCode: verificationCode,
 						phone,
+						accountType,
 						openid
 					});
 				}
@@ -192,6 +207,7 @@ class Points {
 				if (this.verifyPhone) {
 					return bindingPhone({
 						validateCode: verificationCode,
+						accountType,
 						phone
 					});
 				}
@@ -208,10 +224,15 @@ class Points {
 			.then(() => this.loading.hide())
 			.catch(err => {
 				this.loading.hide();
-				this.message.create({
-					article: err.message
-				}).then(() => console.log('弹窗已打开'));
-				console.log(err);
+				Promise.resolve()
+					.then(() => handleErrorCode(err, this.errorCode))
+					.then((res) => {
+						this.message.create({
+							article: res.message
+						});
+					}).catch(() => {
+						console.log(err);
+					});
 			});
 	}
 
