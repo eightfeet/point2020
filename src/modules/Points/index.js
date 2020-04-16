@@ -55,6 +55,7 @@ class Points {
 		this.verifyPhone = false;
 		// 绑定手机
 		this.bindPhone = false;
+		// 错误提示
 		this.errorCode = config.errorCode;
 		// 禁止修改手机
 		this.disabledPhone = config.disabledPhone || false;
