@@ -91,6 +91,16 @@ class Points {
 	static Loading = Loading
 
 	/**
+	 * 增加一个访问属性直接访问数据(原型数据和自定数据)
+	 */
+	get $data() {
+		return {
+			...JSON.parse(JSON.stringify(data)),
+			...this.data
+		};
+	}
+
+	/**
 	 * 设置参数
 	 */
 	setData = (data) => {
@@ -180,6 +190,10 @@ class Points {
 		this.loading.show();
 		Promise.resolve()
 			.then(() => {
+				this.prevData.request = this.$data;
+				return (typeof this.onBeforSubmit === 'function') ? this.onBeforSubmit() : null;
+			})
+			.then(() => {
 				// 参数验证
 				const errorMessage = validateParame(
 					this.data,
@@ -221,10 +235,13 @@ class Points {
 					...other
 				});
 			})
-
-			.then(() => this.loading.hide())
+			.then(res => {
+				() => this.loading.hide();
+				this.prevData.response = res;
+			})
 			.catch(err => {
 				this.loading.hide();
+				this.prevData.response = err;
 				Promise.resolve()
 					.then(() => handleErrorCode(err, this.errorCode))
 					.then((res) => {
