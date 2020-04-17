@@ -85,10 +85,13 @@ class Points {
 			prefix: config.timerCounterPrefixText || '',
 			suffix: config.timerCounterSuffixText || '秒后重试'
 		};
+		this.onBeforSubmit = config.onBeforSubmit;
+		this.onAfterSubmit = config.onAfterSubmit;
 	}
 
 	static Modal = Modal
 	static Loading = Loading
+	// static PointError = PointError
 
 	/**
 	 * 增加一个访问属性直接访问数据(原型数据和自定数据)
@@ -188,11 +191,11 @@ class Points {
 	submit = () => {
 		const {phone, antiFakeCode, verificationCode, openid, accountType, ...other } = this.data;
 		this.loading.show();
+		if (typeof this.onBeforSubmit === 'function') this.onBeforSubmit({
+			request: this.prevData.request
+		});
+
 		Promise.resolve()
-			.then(() => {
-				this.prevData.request = this.$data;
-				return (typeof this.onBeforSubmit === 'function') ? this.onBeforSubmit() : null;
-			})
 			.then(() => {
 				// 参数验证
 				const errorMessage = validateParame(
@@ -236,12 +239,21 @@ class Points {
 				});
 			})
 			.then(res => {
-				() => this.loading.hide();
+				this.loading.hide();
 				this.prevData.response = res;
+				if (typeof this.onAfterSubmit === 'function') this.onAfterSubmit({
+					request: this.prevData.request,
+					response: this.prevData.response
+				});
 			})
 			.catch(err => {
 				this.loading.hide();
 				this.prevData.response = err;
+				if (typeof this.onAfterSubmit === 'function') this.onAfterSubmit({
+					request: this.prevData.request,
+					response: this.prevData.response
+				});
+
 				Promise.resolve()
 					.then(() => handleErrorCode(err, this.errorCode))
 					.then((res) => {
@@ -286,9 +298,23 @@ class Points {
 					article: err.message
 				}).then(() => console.log('弹窗已打开'));
 				console.log(err);
+
+				// if (err instanceof PointError) {
+				// 	alert(err.message);
+				// 	err.processed = true;
+
+				// 	throw err;
+				// }
+				
 			});
 	}
 }
+
+// class PointError extends Error {
+// 	constructor(message, code) {
+// 		this.message = message;
+// 	}
+// }
 
 export default Points;
 
@@ -296,11 +322,14 @@ export default Points;
  * data
  * elementIdMapToFields
  * phoneDisable
- 
+onError
+onSuccess
  * onBeforScan
  * onScan
- * onAfterScan
+ * onAfterScan 处理数据->then catch2
+ * setData
  
+
  * onBeforSubmit
  * onSubmit
  * onAfterSubmit
@@ -308,6 +337,24 @@ export default Points;
  * onBeforGetValidateCode
  * onGetValidateCode
  * onAfterGetValidateCode
+ *
+ *
+ *
+ *
+
+new Points({
+    message: {}
+    validateCode: true | false | {
+        interval: 60
+        text：(time) => `${time}秒`
+    }
+
+    onInit: 初始化
+    onScan: 处理扫码结果
+    onValidate：追加校验和处理提交数据
+    onSubmit： 处理积分结果
+    onError：处理积分异常
+})
  */
 
 /**
