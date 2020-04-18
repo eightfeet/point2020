@@ -44,58 +44,401 @@
             });
         }
     </script>
+    <style>
+        em {
+            font-style: italic;
+            font-size: smaller;
+        }
+
+        .by-health-points-message_overlay{
+            position: fixed !important;
+        }
+    </style>
 </head>
 
 <body>
-        <pre>
-            <code class="language-javascript">
-                        if
-            </code>
-        </pre>
-    <div id="aaa"></div>
-    <div class="wrap">
-        <div style="padding: 10px; background: #aaa;">
-            <input id="idphone" />
-            <input id="idvcode" />
-        </div>
-    </div>
-    <div id="sss">
-    </div>
+    <section>
+        <header>
+            <h1>Points 防伪积分模块</h1>
+        </header>
+        <article>
+            <h2>快速开始</h2>
+            <p>HTML</p>
+            <small>在应用页面中创建挂载DOM</small>
+            <pre>
+                <code class="language-html">&lt;div id=&quot;targetId&quot;&gt;&lt;/div&gt;</code>
+            </pre>
+            <p>javaScript</p>
+            <small>实例一个Points</small>
+            <pre>
+                <code class="language-javascript">
+var pointsStart = new Points({
+    targetId: 'targetId'
+});
+                </code>
+            </pre>
+            <p>Example</p>
+            <div id="targetId" style="max-width: 400px;"></div>
+            <br />
+            <h2>Parame 创建实例参数</h2>
+            <p><b>data</b> <em>Object</em> <em>非必填</em> <br /><br />初始化参数，参数将分发到各个接口（防伪积分，绑定手机，获取验证码）</p>
+            <pre>
+                <code class="language-javascript">
+data: {
+    phone: '13114876522', // 积分手机
+    antiFakeCode: 'xxx...', // 16位产品防伪码
+    openid: 'xxxx', // 微信openid，绑定手机时用到
+    verificationCode: '2453', // 手机验证码，绑定手机或验证手机时用到
+    ...其他参考中台api对应参数
+}
+                </code>
+            </pre>
+            <p>
+                <b>elementNodeMappingField</b> 
+                <em>Object</em> 
+                <em>非必填</em> <br /><br />
+                自定义HTHLelement Id 与字段(表单/事件)的映射关系<br />
+                <em>
+                    注意：定义此参数意味着用户将弃用Points创建的模板，
+                    将使用自己页面的HTML元素托管Points的表单与事件，
+                    请务必使用HTMLelement Id 作为映射值
+                </em>
+            </p>
+            <pre>
+                <code class="language-javascript">
+elementNodeMappingField: {
+    phone: "电话号码输入框Id"
+    verificationCode: "验证码输入框Id"
+    antiFakeCode: "防伪码输入框Id"
+    scan: "扫描防伪码按钮Id"
+    sendVerificationCode: "发送验证码按钮Id"
+    submit: "提交按钮Id"
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>verifyPhone</b> 
+                <em>Boolean</em> 
+                <em>非必填</em> <br /><br />
+                是否验证手机号码 默认 false
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.verifyPhone = true
+                </code>
+            </pre>
+
+            <p>
+                <b>bindPhone</b> 
+                <em>Boolean</em> 
+                <em>非必填</em> <br /><br />
+                是否绑定手机号码 默认 false<br />
+                <em>注意：当开启绑定手机号码时需要向绑定接口传openid参数，可在实例Points时通过data参数传入，也可以通过Points.setData({openid: 'xxx'})方法写入</em>
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.verifyPhone = true
+                </code>
+            </pre>
+
+            <p>
+                <b>disabledPhone</b> 
+                <em>Boolean</em> 
+                <em>非必填</em> <br /><br />
+                是否禁止输入/修改手机号码 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.disabledPhone = true
+                </code>
+            </pre>
+
+            <p>
+                <b>hidePhone</b> 
+                <em>Boolean</em> 
+                <em>非必填</em> <br /><br />
+                隐藏手机号码输入框 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.disabledPhone = true
+                </code>
+            </pre>
+
+            <p>
+                <b>errorCodeMap</b> 
+                <em>Object</em> 
+                <em>非必填</em> <br /><br />
+                自定义错误码与错误信息，用于复写接口返回code对应的message<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.errorCodeMap = {
+    404: '对不起！迷路了。',
+    500: '服务器摔了一跤！',
+    ...
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>API</b> 
+                <em>Object</em> 
+                <em>非必填</em> <br /><br />
+                定义防伪积分，绑定手机，获取验证码等 api接口 默认使用中台生产API（开发过程中也可用来替换测试环境API）<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.API = {
+    antifakecode: '积分防伪对应的接口', 
+    bindPhone: '绑定手机对应的接口', 
+    sendValidateCode: '获取验证码对应的接口', 
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>targetId</b> 
+                <em>String</em> 
+                <em>非必填</em> <br /><br />
+                使用默认模版时，默认模版挂载的目标HTHLelement Id （不填将挂载在body下）<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.targetId = 'targetId'
+                </code>
+            </pre>
+
+            <p>
+                <b>id</b> 
+                <em>String</em> 
+                <em>非必填</em> <br /><br />
+                模板id（不填时系统将默认创建一个）<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.id = 'id'
+                </code>
+            </pre>
+
+            <p>
+                <b>autoMount</b> 
+                <em>Boolean</em> 
+                <em>非必填</em> <br /><br />
+                实例化Points时是否自动完成HTHLelement元素的挂载以及事件的处理，默认true；（false时需要通过Points.mount方法手动挂载）<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.id = 'id'
+                </code>
+            </pre>
+
+            <p>
+                <b>onInit</b> 
+                <em>Function</em> 
+                <em>非必填</em> <br /><br />
+                初始化回调<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.onInit = function(){
+    // 实例创建时调用
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>onScan</b> 
+                <em>Function</em> 
+                <em>非必填</em> <br /><br />
+                扫码回调<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.onScan = function(code){
+    // code: 防伪码
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>handleValidate</b> 
+                <em>Function</em> 
+                <em>非必填</em> <br /><br />
+                操作数据验证，用于追加验证逻辑处理，允许通过Promise来终止积分流程<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.handleValidate = function(data){
+    // data 提交的参数
+    return new Promise(function(resolve, reject){
+        if () {
+            resolve()
+        } else {
+            reject(new Points.PointsError('出错了', 2009))
+        }
+    })
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>onSubmit</b> 
+                <em>Function</em> 
+                <em>非必填</em> <br /><br />
+                积分成功回调<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.onSubmit = function(result){
+    // result: 积分结果
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>handleError</b> 
+                <em>Function</em> 
+                <em>非必填</em> <br /><br />
+                处理积分异常，用于处理需要调整的异常结果，允许通过Promise来终止积分流程的异常结果处理<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.handleError = function(error){
+    // error: 错误信息
+    return new Promise(function(resolve, reject){
+        if () {
+            // 需要干预的异常处理，
+            // ...
+        } else {
+            throw error
+        }
+    })
+}
+                </code>
+            </pre>
+
+            <p>
+                <b>verifyPhoneCountdown</b> 
+                <em>Object</em> 
+                <em>非必填</em> <br /><br />
+                获取手机验证码与倒计时设置<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.verifyPhoneCountdown = {
+    interval: '倒计时', 
+    buttonText: '按钮文字', 
+    countdownText: function(count){
+        // 接受一个方法复写倒计时文字 
+        return (count + '秒后重试')
+    }
+}
+                </code>
+            </pre>
+
+            <h2>Options 实例属性</h2>
+            <p>
+                <b>Points.setData</b> 
+                <em>Function</em> 
+                <br /><br />
+                设置当前实例的data参数，这里做了对象的描述属性的代理，不能直接使用Points.data = {phone: '13665781168'}来定义data参数<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.setData({
+    phone: '13665781168'
+})
+                </code>
+            </pre>
+
+            <p>
+                <b>Points.mount</b> 
+                <em>Function</em> 
+                <br /><br />
+                将当前实例重新挂载、重置数据、绑定与事件、代理。<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+// targetId：重置将挂载的targetId 非必填 默认使用原始targetId, 
+// map：重置后的HTML id与字段的映射关系 非必填 默认使用原始映射关系
+Points.mount(targetId, map)
+                </code>
+            </pre>
+
+            <p>
+                <b>Points.$data</b> 
+                <em>Object</em> 
+                <br /><br />
+                获取当前实例参数<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+ var parame = Points.$data;
+                </code>
+            </pre>
+
+            <p>
+                <b>Points.prevData</b> 
+                <em>Object</em> 
+                <br /><br />
+                获取历史(请求\响应)数据 <br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+ var prevData = Points.prevData;
+ prevData.request = '上次的查询数据';
+ prevData.response = '上次的查询结果数据';
+                </code>
+            </pre>
+
+            <h2>static 属性</h2>
+            <p>
+                <b>Points.PointsError</b> 
+                <em>Class</em> 
+                <br /><br />
+                用于创建Points内部能处理的异常<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+// message错误信息 code错误码。
+throw new PointsError(message, code);
+
+                </code>
+            </pre>
+
+            <p>
+                <b>Points.tools</b> 
+                <br /><br />
+                其他工具集<br />
+            </p>
+            <pre>
+                <code class="language-javascript">
+Points.tools = {
+    Modal, // Class 信息弹窗
+    Loading, // Class 加载 Loading
+    validate, // Object 表单验证工具
+    nativeAppJssdk, // 营养管家AppJssdk
+    // 整合微信与营养管家App的条形码与二维码扫码方法
+    scan:{
+        qrCode,
+        barCode
+    }
+}
+
+                </code>
+            </pre>
+        </article>
+        <footer> <small>By-health FED</small> </footer>
+    </section>
 </body>
 <script>
-    var point = new ___Points___({
-        // elementIdMapToFields: {
-        //     phone: 'idphone',
-        //     verificationCode: 'idvcode',
-        //     antiFakeCode: 'idscode'
-        // }
-        data: {
-            phone: 13622809420
-        },
-        disabledPhone: true,
-        bindPhone: false,
-        handleValidate: data => {console.log(data)},
-        handleError: err => {
-            console.log('处理错误', err);
-            throw err;
-        },
-        verifyPhoneCountdown: {
-            interval: 10,
-            buttonText: '验证码',
-            countdownText: function(count){
-                return count + '秒后'
-            }
-        },
-        onSubmit: data => {
-            console.log('onAfterSubmit', data);
-            return Promise.reject({message: '结束'})
-        },
-        errorCodeMap: {
-            401: '<div style="color:red">当前错误码为401</div>'
-        },
-        autoMount: true
+    var pointsStart = new ___Points___({
+        targetId: 'targetId'
     });
-    point.mount();
+</script>
+<script>
     initWechat();
 </script>
 <script>

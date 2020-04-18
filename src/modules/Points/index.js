@@ -29,8 +29,6 @@ let data = {
 // 承接中间数据
 const dataTemp = {};
 
-const pointsId = `by-health-points-${(new Date()).getTime()}-${window.Math.floor(window.Math.random()*100)}`;
-
 let isCustomTemplate = false;
 
 class PointsError extends Error {
@@ -46,6 +44,7 @@ class PointsError extends Error {
  */
 class Points {
 	constructor(param){
+		const pointsId = `by-health-points-${(new Date()).getTime()}-${window.Math.floor(window.Math.random()*100)}`;
 		const config = param || {};
 		if (isObject(config.data)) {
 			data = {
@@ -154,7 +153,7 @@ class Points {
 	 * 挂载Points
 	 * 重置数据代理与监听
 	 */
-	mount = (target, map) =>{
+	mount = (targetId, map) =>{
 		if (isObject(map)) {
 			isCustomTemplate = true;
 			this.elementNodeMappingField = {
@@ -168,7 +167,7 @@ class Points {
 			// 创建模板时数据直接写入到模板
 			createTemplate(
 				this.id,
-				(target || this.target),
+				(document.getElementById(targetId) || this.target),
 				this.disabledPhone,
 				this.hidePhone,
 				(this.verifyPhone || this.bindPhone),

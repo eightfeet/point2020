@@ -9,11 +9,13 @@ export const nodeMap = {
 	sendVerificationCode: `${s.sendVerificationCode}`,
 	submit: `${s.submit}`
 };
+
+const is_mobi = navigator.userAgent.toLowerCase().match(/(ipod|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) !== null;
 const width = window.document.documentElement.clientWidth;
 const prefix = 'by-health-points';
 
 export default (disabledPhone, verifyPhone, hidePhone, data, buttonText) =>{
-	return `<div class="${prefix}-wrap" style="font-size:${31.25 * (width / 750)}px">
+	return `<div class="${prefix}-wrap" style="font-size:${is_mobi ? (31.25 * (width / 750)) : 13}px">
         <div class="${prefix}-antifakecode-item">
             <input class="${prefix}-antifakecode" type="tel" id="${s.antiFakeCode}" value="${data.antiFakeCode || ''}" maxlength="16" placeholder="输入16位瓶盖防伪码" />
             ${(checkEnv() === 1 || checkEnv() === 2 || checkEnv() === 3) ? `<button class="${prefix}-button-scan" id="${s.scan}">扫码</button>` : ''}

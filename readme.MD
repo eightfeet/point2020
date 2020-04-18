@@ -34,7 +34,7 @@ new Points({
     // String 模板id 使用默认模版时，创建的子节点Id
     id,
 
-    // Boolean 自动挂载 实例化Points时是否自动完成HTHLelement元素的挂载以及事件的处理，默认tru；false时需要通过Points.mount方法手动挂载
+    // Boolean 自动挂载 实例化Points时是否自动完成HTHLelement元素的挂载以及事件的处理，默认true；false时需要通过Points.mount方法手动挂载
     autoMount,
 
     // Function 扫码回调
@@ -48,6 +48,9 @@ new Points({
 
     // Function 初始化回调
     onInit,
+
+    // Function 积分回调
+    onSubmit,
     
     // Object 验证手机倒计时设置 {interval: 倒计时, buttonText: 按钮文字, countdownText: 接受一个方法复写倒计时文字 count => `${count}秒后重试`}
     verifyPhoneCountdown
@@ -81,7 +84,7 @@ Class PointsError 用于创建Points内部能处理的异常， throw new Points
     Modal, // Class 信息弹窗
     Loading, // Class 加载 Loading
     validate, // Object 表单验证工具
-    nativeAppJssdk, // 营养管家appSDK
+    nativeAppJssdk, // 营养管家AppJssdk
     // 整合微信与营养管家App的条形码与二维码扫码方法
     scan:{
         qrCode,
