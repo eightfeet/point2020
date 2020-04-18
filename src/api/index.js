@@ -64,8 +64,8 @@ export function accurePoints(parames, options, apiUrl) {
  * 获取手机验证码
  * @param {String} phone 手机号码
  */
-export const sendValidateCode = (phone) => {
-	const operateApi = `${baseUrl}/message/sendValidateCode`;
+export const sendValidateCode = (phone, apiUrl) => {
+	const operateApi = apiUrl ? apiUrl : `${baseUrl}/message/sendValidateCode`;
 	const parames =  {
 		'taskId': 7,  //任务ID  6:推送语音验证码  7:发送手机验证码  11：福利卡验证码
 		'length': 4,  //验证码长度
@@ -99,8 +99,8 @@ export const sendValidateCode = (phone) => {
  * 手机绑定
  * @param {Object} data 绑定手机参数
  */
-export const bindingPhone = (data) => {
-	const operateApi = `${baseUrl}/auth/consumer/loginByPhone`;
+export const bindingPhone = (data, apiUrl) => {
+	const operateApi = apiUrl ? apiUrl : `${baseUrl}/auth/consumer/loginByPhone`;
 	return fetch(operateApi, {
 		method: 'POST',
 		headers: {

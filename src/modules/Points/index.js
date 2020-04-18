@@ -76,7 +76,9 @@ class Points {
 		// 隐藏手机
 		this.hidePhone = config.hidePhone || false;
 		// 定义防伪积分接口
-		this.http = config.http || 'http://www.baidu.com';
+		this.API = {
+			...(isObject(config.API) ? config.API : {})
+		};
 		// 挂载Dom
 		this.target = document.getElementById(config.targetId) || document.body;
 		// 模块ID
@@ -254,18 +256,18 @@ class Points {
 						phone,
 						accountType,
 						openid
-					}).catch(err => {
+					}, this.API.bindPhone).catch(err => {
 						throw new PointsError(err.message, err.code);
 					});
 				}
-
+				
 				// 验证手机
 				if (this.verifyPhone) {
 					return bindingPhone({
 						validateCode: verificationCode,
 						accountType,
 						phone
-					}).catch(err => {
+					}, this.API.bindPhone).catch(err => {
 						throw new PointsError(err.message, err.code);
 					});
 				}
@@ -276,7 +278,7 @@ class Points {
 					mobilePhone: phone,
 					antifakecode: antiFakeCode,
 					...other
-				}).catch(err => {
+				}, {}, this.API.antifakecode).catch(err => {
 					throw new PointsError(err.message, err.code);
 				});
 			})
@@ -335,7 +337,7 @@ class Points {
 			return;
 		}
 		this.loading.show();
-		sendValidateCode(phone)
+		sendValidateCode(phone, this.API.sendValidateCode)
 			.then(() => {
 				this.loading.hide();
 				const element = document.getElementById(this.elementNodeMappingField.sendVerificationCode);
