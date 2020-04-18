@@ -346,11 +346,6 @@ class Points {
 				}
 			})
 			.catch(err => {
-				const element = document.getElementById(this.elementNodeMappingField.sendVerificationCode);
-				if (element) {
-					timerCounter(element, this.verifyPhoneCountdown);
-				}
-
 				this.loading.hide();
 				this.message.create({
 					article: err.message
