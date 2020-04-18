@@ -71,13 +71,15 @@
         //     antiFakeCode: 'idscode'
         // }
         // disabledPhone: true
-        onBeforSubmit: data => {
-            console.log('onBeforSubmit', data);
-            Promise.reject({message: '开始'})
-        },
-        onAfterSubmit: data => {
+        bindPhone: true,
+        handleValidate: data => {console.log(data)},
+        onSubmit: data => {
             console.log('onAfterSubmit', data);
-            Promise.reject({message: '结束'})
+            return Promise.reject({message: '结束'})
+        },
+        handleError: err => {
+            console.log('处理错误', err);
+            throw err;
         },
         errorCode: {
             401: '<div style="color:red">当前错误码为401</div>'

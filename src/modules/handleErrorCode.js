@@ -7,7 +7,7 @@ import defaultErrorCode from './../errorCode';
  * @param error 错误数据
  * @param errorCode 传入的代理错误数据
  */
-export default (error, errorCode) => new Promise((resolve) => {
+export default (error, errorCode) => new Promise((resolve, reject) => {
 	// 默认代理数据
 	let operateCode = defaultErrorCode;
 
@@ -24,12 +24,12 @@ export default (error, errorCode) => new Promise((resolve) => {
 	});
 		
 	if (proxyCode.includes(error.code)) {
-		resolve({
+		reject({
 			code: error.code,
 			message: operateCode[error.code]
 		});
 	} else {
-		resolve(error);
+		reject(error);
 	}
 	
 });

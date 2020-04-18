@@ -22,7 +22,6 @@ import handleErrorCode from './../handleErrorCode';
 // data;
 let data = {
 	phone: null,
-	verificationCode: null,
 	antiFakeCode: null
 };
 
@@ -33,6 +32,14 @@ const pointsId = `by-health-points-${(new Date()).getTime()}-${window.Math.floor
 
 let isCustomTemplate = false;
 
+class PointsError extends Error {
+	constructor(message, code) {
+		super(message, code);
+		this.message = message;
+		this.code = code;
+	}
+}
+
 /**
  * 积分模块
  */
@@ -42,7 +49,8 @@ class Points {
 		if (isObject(config.data)) {
 			data = {
 				...data,
-				...config.data
+				...config.data,
+				...(config.verifyPhone || config.bindPhone) ? {verificationCode: null} : {}
 			};
 		}
 		// 当前参数数据
@@ -52,9 +60,9 @@ class Points {
 		// 映射关系
 		this.elementNodeMappingField = nodeMap;
 		// 验证手机
-		this.verifyPhone = false;
+		this.verifyPhone = config.verifyPhone || false;
 		// 绑定手机
-		this.bindPhone = false;
+		this.bindPhone = config.bindPhone || false;
 		// 错误提示
 		this.errorCode = config.errorCode;
 		// 禁止修改手机
@@ -85,13 +93,21 @@ class Points {
 			prefix: config.timerCounterPrefixText || '',
 			suffix: config.timerCounterSuffixText || '秒后重试'
 		};
-		this.onBeforSubmit = config.onBeforSubmit;
-		this.onAfterSubmit = config.onAfterSubmit;
+		// 扫码回调
+		this.onScan = config.onScan;
+		// 异常处理
+		this.handleError = config.handleError;
+		// 追加验证处理 主动
+		this.handleValidate = config.handleValidate;
+		// 初始化
+		if (typeof config.onInit === 'function') {
+			config.onInit();
+		}
 	}
 
 	static Modal = Modal
 	static Loading = Loading
-	// static PointError = PointError
+	static PointsError = PointsError
 
 	/**
 	 * 增加一个访问属性直接访问数据(原型数据和自定数据)
@@ -181,6 +197,9 @@ class Points {
 		qrCode()
 			.then(res => {
 				this.data.antiFakeCode = res;
+				if (typeof this.onScan === 'function') {
+					this.onScan(this.$data);
+				}
 			})
 			.catch(err => console.log(err));
 	}
@@ -190,11 +209,8 @@ class Points {
 	 */
 	submit = () => {
 		const {phone, antiFakeCode, verificationCode, openid, accountType, ...other } = this.data;
-		this.loading.show();
-		if (typeof this.onBeforSubmit === 'function') this.onBeforSubmit({
-			request: this.prevData.request
-		});
 
+		this.loading.show();
 		Promise.resolve()
 			.then(() => {
 				// 参数验证
@@ -207,9 +223,10 @@ class Points {
 				);
 				// 处理验证结果
 				if (errorMessage) {
-					return Promise.reject({message: errorMessage});
+					throw new PointsError(errorMessage, -1000);
 				}
 			})
+			.then(() => typeof this.handleValidate === 'function' ? this.handleValidate(this.$data) : null)
 			.then(() => {
 				// 绑定手机(优先！)
 				if (this.bindPhone) {
@@ -218,6 +235,8 @@ class Points {
 						phone,
 						accountType,
 						openid
+					}).catch(err => {
+						throw new PointsError(err.message, err.code);
 					});
 				}
 
@@ -227,6 +246,8 @@ class Points {
 						validateCode: verificationCode,
 						accountType,
 						phone
+					}).catch(err => {
+						throw new PointsError(err.message, err.code);
 					});
 				}
 			})
@@ -236,33 +257,40 @@ class Points {
 					mobilePhone: phone,
 					antifakecode: antiFakeCode,
 					...other
+				}).catch(err => {
+					throw new PointsError(err.message, err.code);
 				});
+			})
+			.then(res => {
+				// 成功回调 被动
+				if (typeof this.onSubmit === 'function') this.onSubmit(res);
+				return res;
 			})
 			.then(res => {
 				this.loading.hide();
 				this.prevData.response = res;
-				if (typeof this.onAfterSubmit === 'function') this.onAfterSubmit({
-					request: this.prevData.request,
-					response: this.prevData.response
-				});
 			})
 			.catch(err => {
+				// 失败回调
 				this.loading.hide();
 				this.prevData.response = err;
-				if (typeof this.onAfterSubmit === 'function') this.onAfterSubmit({
-					request: this.prevData.request,
-					response: this.prevData.response
-				});
-
-				Promise.resolve()
-					.then(() => handleErrorCode(err, this.errorCode))
-					.then((res) => {
-						this.message.create({
-							article: res.message
+				
+				// 处理错误信息 主动
+				if (typeof this.handleError === 'function') {
+					this.handleError(err);
+				} else {
+					throw err;
+				}
+			})
+			.catch(err => {
+				if (err instanceof PointsError) {
+					handleErrorCode(err, this.errorCode)
+						.catch(err => {
+							this.message.create({
+								article: err.message
+							});
 						});
-					}).catch(() => {
-						console.log(err);
-					});
+				}
 			});
 	}
 
@@ -274,15 +302,13 @@ class Points {
 		const error = validate({
 			VPhone: phone
 		});
-
 		if (error) {
 			this.message.create({
 				article: error
-			}).then(() => console.log('弹窗已打开'));
-			console.log(error);
+			});
+			console.error(error);
 			return;
 		}
-		console.log('获取验证码');
 		this.loading.show();
 		sendValidateCode(phone)
 			.then(() => {
@@ -296,25 +322,11 @@ class Points {
 				this.loading.hide();
 				this.message.create({
 					article: err.message
-				}).then(() => console.log('弹窗已打开'));
-				console.log(err);
-
-				// if (err instanceof PointError) {
-				// 	alert(err.message);
-				// 	err.processed = true;
-
-				// 	throw err;
-				// }
-				
+				});
+				console.error(err);
 			});
 	}
 }
-
-// class PointError extends Error {
-// 	constructor(message, code) {
-// 		this.message = message;
-// 	}
-// }
 
 export default Points;
 
@@ -351,9 +363,9 @@ new Points({
 
     onInit: 初始化
     onScan: 处理扫码结果
-    onValidate：追加校验和处理提交数据
+    handleValidate：追加校验和处理提交数据
     onSubmit： 处理积分结果
-    onError：处理积分异常
+    handleError：处理积分异常
 })
  */
 
