@@ -1,6 +1,5 @@
 :global {
   .by-health-points-wrap {
-    padding: 20px;
     button,
     input {
       /* table elements 表格元素 */
@@ -9,6 +8,7 @@
       border: none;
       color: #404040;
       box-sizing: border-box;
+      font-size: 1em;
     }
 
     input::-webkit-outer-spin-button,
@@ -44,12 +44,12 @@
 
   .by-health-points-message_close{
     background-color: rgba(0, 0, 0, 0.5);
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 1rem;
-    line-height: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 1em;
+    line-height: 1.5em;
     text-align: center;
-    right: -2rem !important;
+    right: -2em !important;
     &::before {
       content: '\2715';
       color: #fff;
