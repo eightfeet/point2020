@@ -8,7 +8,7 @@ import validate from 'validate-by-health';
  * @param { Boolean } disabledPhone 禁用手机
  * @param { Boolean } verifyPhone 是否验证手机
  */
-export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone, data) => {
+export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone, data, buttonText) => {
 	// 移除
 	const hasIdObject = document.getElementById(id);
 	if (hasIdObject) hasIdObject.parentNode.removeChild(hasIdObject);
@@ -18,7 +18,7 @@ export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone
 	div.id = id;
 	target.appendChild(div);
 	// 重定rootNode内容注入模板
-	div.innerHTML = createHtml(disabledPhone, verifyPhone, hidePhone, data);
+	div.innerHTML = createHtml(disabledPhone, verifyPhone, hidePhone, data, buttonText);
 };
 
 /**
@@ -169,15 +169,22 @@ export const validateParame = (params, condition) => {
 /**
  * 60s倒计时
  * @param { HTMLElement } element,
- * @param { Object } timerCounterText = { prefix, suffix } 时分秒前后缀
+ * @param { Object } timerCounterText = { interval, buttonText, countdownText } 时分秒前后缀
  */
-export const timerCounter = (element, { prefix, suffix }) => {
-	let counter = 60;
+
+export const timerCounter = (element, { interval, buttonText, countdownText }) => {
+	let counter = interval;
 	let timer = null;
 	const fn = () => {
 		counter--;
 		element.setAttribute('disabled', true);
-		element.innerHTML = `${prefix}${counter}${suffix}`;
+
+		if (typeof countdownText === 'function') {
+			element.innerHTML = countdownText(counter) || `${counter}秒后重试`;
+		} else {
+			element.innerHTML = `${counter}秒后重试`;
+		}
+
 		if (counter > 0) {
 			window.clearTimeout(timer);
 			timer = setTimeout(() => {
@@ -185,7 +192,7 @@ export const timerCounter = (element, { prefix, suffix }) => {
 			}, 1000);
 		} else {
 			element.removeAttribute('disabled');
-			element.innerHTML = '获取验证码';
+			element.innerHTML = buttonText;
 			return;
 		}
 	};

@@ -12,7 +12,7 @@ export const nodeMap = {
 
 const prefix = 'by-health-points';
 
-export default (disabledPhone, verifyPhone, hidePhone, data) =>{
+export default (disabledPhone, verifyPhone, hidePhone, data, buttonText) =>{
 	return `<div class="${prefix}-wrap">
         <div class="${prefix}-antifakecode-item">
             <input class="${prefix}-antifakecode" type="tel" id="${s.antiFakeCode}" value="${data.antiFakeCode || ''}" maxlength="16" placeholder="输入16位瓶盖防伪码" />
@@ -23,7 +23,7 @@ export default (disabledPhone, verifyPhone, hidePhone, data) =>{
         </div>`}
         ${verifyPhone ? `<div class="${prefix}-verificationcode-item">
             <input class="${prefix}-verificationcode" type="tel" id="${s.verificationCode}"  value="${data.verificationCode || ''}" maxlength="4" placeholder="输入验证码" />
-            <button class="${prefix}-button-sendverificationcode" id="${s.sendVerificationCode}">获取验证码</button>
+            <button class="${prefix}-button-sendverificationcode" id="${s.sendVerificationCode}">${buttonText || '获取验证码'}</button>
         </div>` : ''}
         <div class="${prefix}-submit-item">
             <button class="${prefix}-button-submit" id="${s.submit}">提交</button>

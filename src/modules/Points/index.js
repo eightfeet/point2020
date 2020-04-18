@@ -89,17 +89,24 @@ class Points {
 		// 创建loading和message
 		this.message = new Modal(config.messageParame || messageParame);
 		this.loading = new Loading(config.loadingParame || loadingParame);
-		// 倒计时前后缀文字
-		this.timerCounterText = {
-			prefix: config.timerCounterPrefixText || '',
-			suffix: config.timerCounterSuffixText || '秒后重试'
-		};
 		// 扫码回调
 		this.onScan = config.onScan;
 		// 异常处理
 		this.handleError = config.handleError;
 		// 追加验证处理 主动
 		this.handleValidate = config.handleValidate;
+		// 验证手机计时器参数
+		this.verifyPhoneCountdown = {
+			interval: 60,
+			buttonText: '获取验证码',
+			countdownText: (time) => `${time}秒后重试`,
+			...(isObject(config.verifyPhoneCountdown) ? config.verifyPhoneCountdown : {})
+		};
+
+		if (config.autoMount !== false) {
+			this.mount();
+		}
+
 		// 初始化
 		if (typeof config.onInit === 'function') {
 			config.onInit();
@@ -142,9 +149,10 @@ class Points {
 	
 
 	/**
+	 * 挂载Points
 	 * 重置数据代理与监听
 	 */
-	bind = (target, map) =>{
+	mount = (target, map) =>{
 		if (isObject(map)) {
 			isCustomTemplate = true;
 			this.elementNodeMappingField = {
@@ -162,7 +170,8 @@ class Points {
 				this.disabledPhone,
 				this.hidePhone,
 				(this.verifyPhone || this.bindPhone),
-				this.data
+				this.data,
+				this.verifyPhoneCountdown.buttonText
 			);
 		} else {
 			// 自定义模板时需要根据映射关系回填数据
@@ -325,10 +334,15 @@ class Points {
 				this.loading.hide();
 				const element = document.getElementById(this.elementNodeMappingField.sendVerificationCode);
 				if (element) {
-					timerCounter(element, this.timerCounterText);
+					timerCounter(element, this.verifyPhoneCountdown);
 				}
 			})
 			.catch(err => {
+				const element = document.getElementById(this.elementNodeMappingField.sendVerificationCode);
+				if (element) {
+					timerCounter(element, this.verifyPhoneCountdown);
+				}
+
 				this.loading.hide();
 				this.message.create({
 					article: err.message

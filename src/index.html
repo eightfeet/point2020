@@ -70,12 +70,22 @@
         //     verificationCode: 'idvcode',
         //     antiFakeCode: 'idscode'
         // }
-        // disabledPhone: true
+        data: {
+            phone: 131222222222
+        },
+        disabledPhone: true,
         bindPhone: true,
         handleValidate: data => {console.log(data)},
         handleError: err => {
             console.log('处理错误', err);
             throw err;
+        },
+        verifyPhoneCountdown: {
+            interval: 10,
+            buttonText: '验证码',
+            countdownText: function(count){
+                return count + '秒后'
+            }
         },
         onSubmit: data => {
             console.log('onAfterSubmit', data);
@@ -84,9 +94,9 @@
         errorCodeMap: {
             401: '<div style="color:red">当前错误码为401</div>'
         },
-        timerCounterPrefixText: '等'
+        autoMount: true
     });
-    point.bind();
+    point.mount();
     initWechat();
 </script>
 <script>
