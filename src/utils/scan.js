@@ -45,7 +45,7 @@ export function qrCode() {
 			return data;
 		});
 	}
-	return Promise.reject('非许可环境');
+	return Promise.reject('非许可环境, 请在微信环境或者营养管家App中使用扫码');
 }
 
 export function barCode() {
@@ -76,7 +76,7 @@ export function barCode() {
 			return data;
 		});
 	}
-	return Promise.reject('非许可环境');
+	return Promise.reject('非许可环境, 请在微信环境或者营养管家App中使用扫码');
 }
 
 

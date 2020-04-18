@@ -1,5 +1,6 @@
 
 import validate from 'validate-by-health';
+import * as nativeAppJssdk from '@byhealth/native-app-jssdk';
 import { nodeMap } from './../template';
 import {
 	createTemplate,
@@ -13,7 +14,7 @@ import {
 } from './../helper';
 import {messageParame,
 	loadingParame} from '~/config';
-import { qrCode } from './../../utils/scan';
+import { qrCode, barCode } from './../../utils/scan';
 import { accurePoints, sendValidateCode, bindingPhone } from '~/api';
 import Modal from '@eightfeet/modal';
 import Loading from '@eightfeet/loading';
@@ -64,7 +65,7 @@ class Points {
 		// 绑定手机
 		this.bindPhone = config.bindPhone || false;
 		// 错误提示
-		this.errorCode = config.errorCode;
+		this.errorCodeMap = config.errorCodeMap;
 		// 禁止修改手机
 		this.disabledPhone = config.disabledPhone || false;
 		// 隐藏手机
@@ -105,9 +106,18 @@ class Points {
 		}
 	}
 
-	static Modal = Modal
-	static Loading = Loading
 	static PointsError = PointsError
+	static tools = {
+		Modal,
+		Loading,
+		validate,
+		nativeAppJssdk,
+		// 整合微信与营养管家App扫码SDK
+		scan:{
+			qrCode,
+			barCode
+		}
+	}
 
 	/**
 	 * 增加一个访问属性直接访问数据(原型数据和自定数据)
@@ -284,7 +294,7 @@ class Points {
 			})
 			.catch(err => {
 				if (err instanceof PointsError) {
-					handleErrorCode(err, this.errorCode)
+					handleErrorCode(err, this.errorCodeMap)
 						.catch(err => {
 							this.message.create({
 								article: err.message

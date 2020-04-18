@@ -73,15 +73,15 @@
         // disabledPhone: true
         bindPhone: true,
         handleValidate: data => {console.log(data)},
-        onSubmit: data => {
-            console.log('onAfterSubmit', data);
-            return Promise.reject({message: '结束'})
-        },
         handleError: err => {
             console.log('处理错误', err);
             throw err;
         },
-        errorCode: {
+        onSubmit: data => {
+            console.log('onAfterSubmit', data);
+            return Promise.reject({message: '结束'})
+        },
+        errorCodeMap: {
             401: '<div style="color:red">当前错误码为401</div>'
         },
         timerCounterPrefixText: '等'

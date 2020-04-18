@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Points</title><script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script><script>function wechatAuth(data) {
+<!doctype html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Points</title><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script><script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script><script>function wechatAuth(data) {
             return fetch('https://yyj-test.by-health.com/scrm/wechatBH/jssdk', {
                 method: 'POST',
                 headers: {
@@ -12,7 +12,7 @@
                 return res.json();
             });
         }
-    
+
         function initWechat() {
             wechatAuth().then(function (res) {
                 var data = res;
@@ -29,4 +29,36 @@
                 console.log('微信授权失败', err);
                 // document.getElementById('QrDom').style.display = 'none'
             });
-        }</script></head><body><div id="aaa"></div><div class="wrap"><div style="padding:10px;background:#aaa"><input id="idphone"> <input id="idvcode"></div></div><div id="sss"></div><script type="text/javascript" src="./points.js?5923ef9940cea13a1475"></script></body><script>var point=new ___Points___({timerCounterPrefixText:"等"});point.bind(),initWechat()</script></html>
+        }</script></head><body><pre>
+            <code class="language-javascript">
+                        if
+            </code>
+        </pre><div id="aaa"></div><div class="wrap"><div style="padding:10px;background:#aaa"><input id="idphone"> <input id="idvcode"></div></div><div id="sss"></div><script type="text/javascript" src="./points.js?a974d4f5f1aa01d013ce"></script></body><script>var point = new ___Points___({
+        // elementIdMapToFields: {
+        //     phone: 'idphone',
+        //     verificationCode: 'idvcode',
+        //     antiFakeCode: 'idscode'
+        // }
+        // disabledPhone: true
+        bindPhone: true,
+        handleValidate: data => {console.log(data)},
+        onSubmit: data => {
+            console.log('onAfterSubmit', data);
+            return Promise.reject({message: '结束'})
+        },
+        handleError: err => {
+            console.log('处理错误', err);
+            throw err;
+        },
+        errorCode: {
+            401: '<div style="color:red">当前错误码为401</div>'
+        },
+        timerCounterPrefixText: '等'
+    });
+    point.bind();
+    initWechat();</script><script>hljs.initHighlightingOnLoad();
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+    });</script></html>
