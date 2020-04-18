@@ -8,7 +8,7 @@ import validate from 'validate-by-health';
  * @param { Boolean } disabledPhone 禁用手机
  * @param { Boolean } verifyPhone 是否验证手机
  */
-export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone, data, buttonText) => {
+export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone, data, buttonText, elementNodeMappingField) => {
 	// 移除
 	const hasIdObject = document.getElementById(id);
 	if (hasIdObject) hasIdObject.parentNode.removeChild(hasIdObject);
@@ -18,7 +18,7 @@ export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone
 	div.id = id;
 	target.appendChild(div);
 	// 重定rootNode内容注入模板
-	div.innerHTML = createHtml(disabledPhone, verifyPhone, hidePhone, data, buttonText);
+	div.innerHTML = createHtml(disabledPhone, verifyPhone, hidePhone, data, buttonText, elementNodeMappingField);
 };
 
 /**

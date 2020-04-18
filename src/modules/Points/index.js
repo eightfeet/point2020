@@ -58,7 +58,8 @@ class Points {
 		// 历史监听方法
 		this.listenerHistory = null;
 		// 映射关系
-		this.elementNodeMappingField = nodeMap;
+		this.elementNodeMappingField = nodeMap(pointsId);
+
 		// 自定义表单输入元素
 		if (isObject(config.elementIdMapToFields)) {
 			this.elementNodeMappingField = config.elementIdMapToFields;
@@ -164,6 +165,7 @@ class Points {
 			isCustomTemplate = false;
 		}
 		if (!isCustomTemplate) {
+			console.log(7777, document.getElementById(targetId));
 			// 创建模板时数据直接写入到模板
 			createTemplate(
 				this.id,
@@ -172,7 +174,8 @@ class Points {
 				this.hidePhone,
 				(this.verifyPhone || this.bindPhone),
 				this.data,
-				this.verifyPhoneCountdown.buttonText
+				this.verifyPhoneCountdown.buttonText,
+				this.elementNodeMappingField,
 			);
 		} else {
 			// 自定义模板时需要根据映射关系回填数据
