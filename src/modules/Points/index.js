@@ -60,6 +60,11 @@ class Points {
 		this.listenerHistory = null;
 		// 映射关系
 		this.elementNodeMappingField = nodeMap;
+		// 自定义表单输入元素
+		if (isObject(config.elementIdMapToFields)) {
+			this.elementNodeMappingField = config.elementIdMapToFields;
+			isCustomTemplate = true;
+		}
 		// 验证手机
 		this.verifyPhone = config.verifyPhone || false;
 		// 绑定手机
@@ -70,11 +75,6 @@ class Points {
 		this.disabledPhone = config.disabledPhone || false;
 		// 隐藏手机
 		this.hidePhone = config.hidePhone || false;
-		// 自定义表单输入元素
-		if (isObject(config.elementIdMapToFields)) {
-			this.elementNodeMappingField = config.elementIdMapToFields;
-			isCustomTemplate = true;
-		}
 		// 定义防伪积分接口
 		this.http = config.http || 'http://www.baidu.com';
 		// 挂载Dom
@@ -217,7 +217,7 @@ class Points {
 			.then(res => {
 				this.data.antiFakeCode = res;
 				if (typeof this.onScan === 'function') {
-					this.onScan(this.$data);
+					this.onScan(res);
 				}
 			})
 			.catch(err => console.log(err));
@@ -287,12 +287,18 @@ class Points {
 			})
 			.then(res => {
 				this.loading.hide();
-				this.prevData.response = res;
+				this.prevData = {
+					response: res,
+					request: this.$data
+				};
 			})
 			.catch(err => {
 				// 失败回调
 				this.loading.hide();
-				this.prevData.response = err;
+				this.prevData = {
+					response: err,
+					request: this.$data
+				};
 				
 				// 处理错误信息 主动
 				if (typeof this.handleError === 'function') {
@@ -353,56 +359,3 @@ class Points {
 }
 
 export default Points;
-
-/**
- * data
- * elementIdMapToFields
- * phoneDisable
-onError
-onSuccess
- * onBeforScan
- * onScan
- * onAfterScan 处理数据->then catch2
- * setData
- 
-
- * onBeforSubmit
- * onSubmit
- * onAfterSubmit
- 
- * onBeforGetValidateCode
- * onGetValidateCode
- * onAfterGetValidateCode
- *
- *
- *
- *
-
-new Points({
-    message: {}
-    validateCode: true | false | {
-        interval: 60
-        text：(time) => `${time}秒`
-    }
-
-    onInit: 初始化
-    onScan: 处理扫码结果
-    handleValidate：追加校验和处理提交数据
-    onSubmit： 处理积分结果
-    handleError：处理积分异常
-})
- */
-
-/**
- * 流程
- * 创建皮肤
- * 重置监听与事件绑定
- * Promise.resolve
- * .then(清除与创建模板createTemplates)
- * .then(定义皮肤id映射Field)
- * .then(重置监听与事件绑定)
- * .then(定义接口、扫码按钮、提交事件)
- * end
- */
-
-
