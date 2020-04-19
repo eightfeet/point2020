@@ -93,6 +93,20 @@
         #demo {
             height: 300px;
         }
+
+        #demoa, #demob {
+             border: 1px solid #aaa;
+             margin: 10px;
+        }
+
+        #setdatabtn{
+            margin: 20px;
+        }
+
+        #mountbtn {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 
@@ -705,115 +719,311 @@
                         }
                     </script>
                 </div>
-                <p>
-                    <b id="onSubmit">onSubmit</b> 
-                    <em>Function</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    积分成功回调<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.onSubmit = function(result){
-        // result: 积分结果
-    }
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="handleError">handleError</b> 
-                    <em>Function</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    处理积分异常，用于处理需要调整的异常结果，允许通过Promise来终止积分流程的异常结果处理<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.handleError = function(error){
-        // error: 错误信息
-        return new Promise(function(resolve, reject){
-            if () {
-                // 需要干预的异常处理，
-                // ...
-            } else {
-                throw error
-            }
-        })
-    }
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="verifyPhoneCountdown">verifyPhoneCountdown</b> 
-                    <em>Object</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    获取手机验证码与倒计时设置<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.verifyPhoneCountdown = {
-        interval: '倒计时', 
-        buttonText: '按钮文字', 
-        countdownText: function(count){
-            // 接受一个方法复写倒计时文字 
-            return (count + '秒后重试')
+                <div>
+                    <p>
+                        <b id="onSubmit">onSubmit</b> 
+                        <em>Function</em> 
+                        <em>非必填</em> <br /><span id="demo-onSubmit" class="icon-demo">demo</span><br />
+                        积分成功回调<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        onSubmit: function(res){
+            window.alert(&#x27;Points积分成功回调，res为积分成功结果&#x27;);
         }
-    }
-                    </code>
-                </pre>
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-onSubmit').onclick = function(){
+                            showDemo('参数：onSubmit', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    onSubmit: function(res){
+                                        window.alert('Points积分成功回调，res为积分成功结果');
+                                    }
+                                });
+                            });
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="handleError">handleError</b> 
+                        <em>Function</em> 
+                        <em>非必填</em> <br /><span id="demo-handleError" class="icon-demo">demo</span><br />
+                        处理积分异常，用于处理需要调整的异常结果，允许通过中途吞掉Promise的catch来终止积分流程的异常结果处理<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;,
+        handleError: function(error){
+            // code = -1000 数据验证错误码
+            if (error.code === -1000) {
+                window.alert(&#x27;通过handleError处理错误，比如这里只处理数据验证错误！&#x27; + error.message);
+            } else {
+                // 其他错误不做处理，交给Points处理
+                throw error;
+            }
+        }
+    })
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-handleError').onclick = function(){
+                            showDemo('参数：handleError', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    handleError: function(error){
+                                        // code = -1000 数据验证错误码
+                                        if (error.code === -1000) {
+                                            window.alert('通过handleError处理错误，比如这里只处理数据验证错误！\n' + error.message);
+                                        } else {
+                                            // 其他错误不做处理，交给Points处理
+                                            throw error;
+                                        }
+                                    }
+                                })
+                            });
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="verifyPhoneCountdown">verifyPhoneCountdown</b> 
+                        <em>Object</em> 
+                        <em>非必填</em> <br /><span id="demo-verifyPhoneCountdown" class="icon-demo">demo</span><br />
+                        获取手机验证码与倒计时设置<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            antiFakeCode: 7899678266561417,
+            phone: 13622809421
+        },
+        verifyPhone: true,
+        verifyPhoneCountdown: {
+            interval: 10, // 设为10秒倒计时
+            buttonText: &#x27;验证码&#x27;, // 设置获取验证码按钮的文字
+            countdownText: function(count){
+                // 接受一个方法复写倒计时文字 
+                return (&#x27;稍等&#x27; + count + &#x27;秒&#x27;)
+            }
+        }
+    })
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-verifyPhoneCountdown').onclick = function(){
+                            showDemo('参数：verifyPhoneCountdown', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    data: {
+                                        antiFakeCode: 7899678266561417,
+                                        phone: 13622809421
+                                    },
+                                    verifyPhone: true,
+                                    verifyPhoneCountdown: {
+                                        interval: 10, // 设为10秒倒计时
+                                        buttonText: '验证码',
+                                        countdownText: function(count){
+                                            // 接受一个方法复写倒计时文字 
+                                            return ('稍等' + count + '秒')
+                                        }
+                                    }
+                                })
+                            });
+                        }
+                    </script>
+                </div>
 
                 <h2 id="part3">Options 实例属性</h2>
-                <p>
-                    <b id="setData">Points.setData</b> 
-                    <em>Function</em> 
-                    <br /><br />
-                    设置当前实例的data参数，这里做了对象的描述属性的代理，不能直接使用Points.data = {phone: '13665781168'}来定义data参数<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.setData({
-        phone: '13665781168'
+                <div>
+                    <p>
+                        <b id="setData">Points.setData</b> 
+                        <em>Function</em> 
+                        <br />
+                            <span id="demo-setData" class="icon-demo">demo</span>
+                        <br />
+                        设置当前实例的data参数，这里做了对象的描述属性的代理，不能直接使用Points.data = {phone: '13665781168'}来定义data参数<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;
+    &lt;button id=&quot;setdatabtn&quot;&gt;点击设置参数phone=&quot;13622809940&quot;&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;
     })
-                    </code>
-                </pre>
+    document.getElementById(&#x27;setdatabtn&#x27;).onclick = function(){
+        point.setData({
+            phone: &#x27;13622809940&#x27;
+        });
+    }
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-setData').onclick = function(){
+                            showDemo('属性：setData', function(){
+                                var point = new Points({
+                                    targetId: 'demo'
+                                })
+                                document.getElementById('setdatabtn').onclick = function(){
+                                    point.setData({
+                                        phone: '13622809940'
+                                    });
+                                }
+                            }, '<div id="demo"><button id="setdatabtn">点击设置参数phone="13622809940"</button></div>');
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="mount">Points.mount</b> 
+                        <em>Function</em> 
+                        <br />
+                        <span id="demo-mount" class="icon-demo">demo</span>
+                        <br />
+                        将当前实例重新挂载、重置数据、绑定与事件、代理。<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demoa&quot;&gt;demoa&lt;/div&gt;
+&lt;button id=&quot;mountbtn&quot;&gt;点击把Points从demoa挂载到demob&lt;/button&gt;
+&lt;div id=&quot;demob&quot;&gt;demob&lt;/div&gt;
+&lt;script&gt;
+        var point = new Points({
+            targetId: &#x27;demoa&#x27;
+        })
+        document.getElementById(&#x27;mountbtn&#x27;).onclick = function(){
+            // point.mount(targetId, map);
+            // targetId：重置将挂载的targetId 非必填 默认使用原始targetId, 
+            // map：重置后的HTML id与字段的映射关系 非必填 默认使用原始映射关系
+            point.mount(&#x27;demob&#x27;);
+        }
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-mount').onclick = function(){
+                            showDemo('属性：mount', function(){
+                                var point = new Points({
+                                    targetId: 'demoa'
+                                })
+                                document.getElementById('mountbtn').onclick = function(){
+                                    // targetId：重置将挂载的targetId 非必填 默认使用原始targetId, 
+                                    // map：重置后的HTML id与字段的映射关系 非必填 默认使用原始映射关系
+                                    point.mount('demob');
+                                }
+                            }, '<div id="demoa">demoa</div><button id="mountbtn">点击把Points从demoa挂载到demob</button><div id="demob">demob</div>');
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p id="$data">
+                        <b>Points.$data</b> 
+                        <em>Object</em> 
+                        <br />
+                        <span id="demo-$data" class="icon-demo">demo</span>
+                        <br />
+                        获取当前实例参数<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;button id=&quot;$databtn&quot;&gt;获取参数point.$data&lt;/button&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: 13766564437
+        }
+    })
+    document.getElementById(&#x27;$databtn&#x27;).onclick = function(){
+        // 获取当前实例参数
+        window.alert(JSON.stringify(point.$data, null, 2))
+    }
+&lt;/script&gt;
 
-                <p>
-                    <b id="mount">Points.mount</b> 
-                    <em>Function</em> 
-                    <br /><br />
-                    将当前实例重新挂载、重置数据、绑定与事件、代理。<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    // targetId：重置将挂载的targetId 非必填 默认使用原始targetId, 
-    // map：重置后的HTML id与字段的映射关系 非必填 默认使用原始映射关系
-    Points.mount(targetId, map)
-                    </code>
-                </pre>
-
-                <p id="$data">
-                    <b>Points.$data</b> 
-                    <em>Object</em> 
-                    <br /><br />
-                    获取当前实例参数<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    var parame = Points.$data;
-                    </code>
-                </pre>
-
-                <p id="prevData">
-                    <b>Points.prevData</b> 
-                    <em>Object</em> 
-                    <br /><br />
-                    获取历史(请求\响应)数据 <br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    var prevData = Points.prevData;
-    prevData.request = '上次的查询数据';
-    prevData.response = '上次的查询结果数据';
-                    </code>
-                </pre>
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-$data').onclick = function(){
+                            showDemo('属性：$data', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    data: {
+                                        phone: 13766564437
+                                    }
+                                })
+                                document.getElementById('$databtn').onclick = function(){
+                                    // 获取当前实例参数
+                                    window.alert(JSON.stringify(point.$data, null, 2))
+                                }
+                            }, '<div id="demo"><button id="$databtn">获取参数point.$data</button></div>');
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p id="prevData">
+                        <b>Points.prevData</b> 
+                        <em>Object</em> 
+                        <br />
+                        <span id="demo-prevData" class="icon-demo">demo</span>
+                        <br />
+                        获取历史(请求\响应)数据 <br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;button id=&quot;prevDatabtn&quot;&gt;获取上次查询结果point.prevData&lt;/button&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;
+    })
+    document.getElementById(&#x27;prevDatabtn&#x27;).onclick = function(){
+        var prevData = point.prevData;
+        // 获取当前实例的历史数据
+        // prevData.request = &#x27;上次的查询数据&#x27;;
+        // prevData.response = &#x27;上次的查询结果数据&#x27;;
+        
+        window.alert(JSON.stringify(point.prevData, null, 2))
+    }
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-prevData').onclick = function(){
+                            showDemo('属性：prevData', function(){
+                                var point = new Points({
+                                    targetId: 'demo'
+                                })
+                                document.getElementById('prevDatabtn').onclick = function(){
+                                    var prevData = point.prevData;
+                                    // 获取当前实例的历史数据
+                                    // prevData.request = '上次的查询数据';
+                                    // prevData.response = '上次的查询结果数据';
+                                    
+                                    window.alert(JSON.stringify(point.prevData, null, 2))
+                                }
+                            }, '<div id="demo"><button id="prevDatabtn">获取上次查询结果point.prevData</button></div>');
+                        }
+                    </script>
+                </div>
 
                 <h2 id="part4">static 静态属性</h2>
                 <p>

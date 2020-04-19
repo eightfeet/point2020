@@ -299,7 +299,7 @@ class Points {
 				// 失败回调
 				this.loading.hide();
 				this.prevData = {
-					response: err,
+					response: {code: err.code, message: err.message},
 					request: this.$data
 				};
 				
