@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Points</title><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script><script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script><script>function wechatAuth(data) {
+<!doctype html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Points</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script><script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script><script>function wechatAuth(data) {
             return fetch('https://yyj-test.by-health.com/scrm/wechatBH/jssdk', {
                 method: 'POST',
                 headers: {
@@ -29,34 +29,401 @@
                 console.log('微信授权失败', err);
                 // document.getElementById('QrDom').style.display = 'none'
             });
-        }</script></head><body><pre>
-            <code class="language-javascript">
-                        if
-            </code>
-        </pre><div id="aaa"></div><div class="wrap"><div style="padding:10px;background:#aaa"><input id="idphone"> <input id="idvcode"></div></div><div id="sss"></div><script type="text/javascript" src="./points.js?a974d4f5f1aa01d013ce"></script></body><script>var point = new ___Points___({
-        // elementIdMapToFields: {
-        //     phone: 'idphone',
-        //     verificationCode: 'idvcode',
-        //     antiFakeCode: 'idscode'
-        // }
-        // disabledPhone: true
-        bindPhone: true,
-        handleValidate: data => {console.log(data)},
-        onSubmit: data => {
-            console.log('onAfterSubmit', data);
-            return Promise.reject({message: '结束'})
-        },
-        handleError: err => {
-            console.log('处理错误', err);
-            throw err;
-        },
-        errorCode: {
-            401: '<div style="color:red">当前错误码为401</div>'
-        },
-        timerCounterPrefixText: '等'
+        }</script><style>em{font-style:italic;font-size:smaller}.by-health-points-message_overlay,.modaldemo_overlay{position:fixed!important}.menu{position:fixed;width:300px;right:0;top:0;overflow-y:visible}.menu a{text-decoration:none}.main{margin-right:350px}.icon-demo{margin:10px auto;color:#00f;display:block}.icon-demo::before{content:'\2720';padding-right:10px}@media (max-width:767px){.main{margin-right:0}.menu{position:relative;width:auto;overflow-y:auto}}#demo{height:300px}#demoa,#demob{border:1px solid #aaa;margin:10px}#setdatabtn{margin:20px}#mountbtn{display:block;margin:0 auto}</style></head><body><section><header><h1>Points 防伪积分模块</h1></header><article><ul class="menu"><li><a href="#part1">快速开始</a></li><li><a href="#part2">Parame 创建实例参数</a><ul><li><a href="#data">data</a></li><li><a href="#elementNodeMappingField">elementNodeMappingField</a></li><li><a href="#verifyPhone">verifyPhone</a></li><li><a href="#bindPhone">bindPhone</a></li><li><a href="#disabledPhone">disabledPhone</a></li><li><a href="#hidePhone">hidePhone</a></li><li><a href="#errorCodeMap">errorCodeMap</a></li><li><a href="#API">API</a></li><li><a href="#targetId">targetId</a></li><li><a href="#id">id</a></li><li><a href="#autoMount">autoMount</a></li><li><a href="#onScan">onScan</a></li><li><a href="#handleError">handleError</a></li><li><a href="#handleValidate">handleValidate</a></li><li><a href="#onInit">onInit</a></li><li><a href="#onSubmit">onSubmit</a></li><li><a href="#verifyPhoneCountdown">verifyPhoneCountdown</a></li></ul></li><li><a href="#part3">Options 实例属性</a><ul><li><a href="#setData">Points.setData</a></li><li><a href="#mount">Points.mount</a></li><li><a href="#$data">Points.$data</a></li><li><a href="#prevData">Points.prevData</a></li></ul></li><li><a href="#part4">static 静态属性</a><ul><li><a href="#PointsError">Points.PointsError</a></li><li><a href="#tools">Points.tools</a></li></ul></li></ul><div class="main"><div><h2 id="part1">快速开始</h2><p>HTML</p><small>在应用页面中创建挂载DOM</small><pre>
+                        <code class="language-html">
+&lt;div id=&quot;targetId&quot;&gt;&lt;/div&gt;
+                        </code>
+                    </pre><p>javaScript</p><small>实例一个Points</small><pre>
+                        <code class="language-javascript">
+var pointsStart = new Points({
+    targetId: 'targetId'
+});
+                        </code>
+                    </pre></div><br><h2 id="part2">Parame 创建实例参数</h2><div><p><b id="data">data</b> <em>Object</em> <em>非必填</em><br><span id="demo-data" class="icon-demo">demo</span><br>初始化参数，参数将分发到各个接口（防伪积分，绑定手机，获取验证码）</p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: &#x27;13114876522&#x27;, // 积分手机
+            antiFakeCode: &#x27;7898589819759507&#x27;, // 16位产品防伪码
+        }
+        // openid: &#x27;xxxx&#x27;, 微信openid，绑定手机时用到
+        // ...其他参考中台api对应参数
     });
-    point.bind();
-    initWechat();</script><script>hljs.initHighlightingOnLoad();
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-data").onclick=function(){showDemo("参数：data",function(){new Points({targetId:"demo",data:{phone:"13114876522",antiFakeCode:"7898589819759507"}})})}</script></div><div><p><b id="elementNodeMappingField">elementNodeMappingField</b> <em>Object</em> <em>非必填</em><br><span id="demo-elementNodeMappingField" class="icon-demo">demo</span><br>自定义HTHLelement Id 与字段(表单/事件)的映射关系<br><em>注意：定义此参数意味着用户将弃用Points创建的模板， 将使用自己页面的HTML元素托管Points的表单与事件， 请务必使用HTMLelement Id 作为映射值</em></p><pre>
+                        <code class="language-html">
+&lt;div&gt;
+    &lt;h3&gt;自定义UI&lt;/h3&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;custom_phone&quot;&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;custom_verificationCode&quot;&gt;&lt;button id=&quot;custom_sendVerificationCode&quot;&gt;发送验证码&lt;/button&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;custom_antiFakeCode&quot;&gt;&lt;button id=&quot;custom_scan&quot;&gt;扫描防伪码&lt;/button&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;button id=&quot;custom_submit&quot;&gt;马上积分&lt;/button&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        // 默认参数
+        data: {
+            phone: &#x27;13114876522&#x27;, // 积分手机
+            antiFakeCode: &#x27;7898589819759507&#x27;, // 16位产品防伪码
+            // ...其他参考中台api对应参数
+        },
+        // 设置需要验证手机号码
+        verifyPhone: true,
+        // 自定义UI时定义元素映射
+        elementNodeMappingField: {
+            phone: &quot;custom_phone&quot;,
+            verificationCode: &quot;custom_verificationCode&quot;,
+            antiFakeCode: &quot;custom_antiFakeCode&quot;,
+            scan: &quot;custom_scan&quot;,
+            sendVerificationCode: &quot;custom_sendVerificationCode&quot;,
+            submit: &quot;custom_submit&quot;
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-elementNodeMappingField").onclick=function(){showDemo("参数：elementNodeMappingField",function(){new Points({data:{phone:"13114876522",antiFakeCode:"7898589819759507"},verifyPhone:!0,elementNodeMappingField:{phone:"custom_phone",verificationCode:"custom_verificationCode",antiFakeCode:"custom_antiFakeCode",scan:"custom_scan",sendVerificationCode:"custom_sendVerificationCode",submit:"custom_submit"}})},'<div><h3>自定义UI</h3><div><input type="text" id="custom_phone" /></div><div><input type="text" id="custom_verificationCode" /><button id="custom_sendVerificationCode" >发送验证码</button></div><div><input type="text" id="custom_antiFakeCode" /><button id="custom_scan" >扫描防伪码</button></div><div><button id="custom_submit" >马上积分</button></div></div>')}</script></div><div><p><b id="verifyPhone">verifyPhone</b> <em>Boolean</em> <em>非必填</em><br><span id="demo-verifyPhone" class="icon-demo">demo</span><br>是否验证手机号码 默认 false</p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 验证手机
+        verifyPhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-verifyPhone").onclick=function(){showDemo("参数：verifyPhone",function(){new Points({targetId:"demo",verifyPhone:!0})})}</script></div><div><p><b id="bindPhone">bindPhone</b> <em>Boolean</em> <em>非必填</em><br><span id="demo-bindPhone" class="icon-demo">demo</span><br>是否绑定手机号码 默认 false<br><em>注意：当开启绑定手机号码时需要向绑定接口传openid参数，可在实例Points时通过data参数传入，也可以通过Points.setData({openid: 'xxx'})方法写入</em></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 绑定手机注册为会员
+        bindPhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-bindPhone").onclick=function(){showDemo("参数：bindPhone",function(){new Points({targetId:"demo",bindPhone:!0})})}</script></div><div><p><b id="disabledPhone">disabledPhone</b> <em>Boolean</em> <em>非必填</em><br><span id="demo-disabledPhone" class="icon-demo">demo</span><br>是否禁止输入/修改手机号码 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: &#x27;13760887658&#x27;
+        },
+        // 禁止修改手机号码
+        disabledPhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-disabledPhone").onclick=function(){showDemo("参数：disabledPhone",function(){new Points({targetId:"demo",data:{phone:"13760887658"},disabledPhone:!0})})}</script></div><div><p><b id="hidePhone">hidePhone</b> <em>Boolean</em> <em>非必填</em><br><span id="demo-hidePhone" class="icon-demo">demo</span><br>隐藏手机号码输入框 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: &#x27;13760887658&#x27;
+        },
+        // 隐藏手机号码
+        hidePhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-hidePhone").onclick=function(){showDemo("参数：hidePhone",function(){new Points({targetId:"demo",data:{phone:"13760887658"},hidePhone:!0})})}</script></div><div><p><b id="errorCodeMap">errorCodeMap</b> <em>Object</em> <em>非必填</em><br><span id="demo-errorCodeMap" class="icon-demo">demo</span><br>自定义错误码与错误信息，用于复写接口返回code对应的message<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 验证错误的code为-1000，这里我们复写他
+        errorCodeMap: {
+            [-1000]: &#x27;修改了数据验证错误信息&#x27;
+        },
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById('demo-errorCodeMap').onclick = function(){
+                            showDemo('参数：errorCodeMap', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    // 验证错误的code为-1000，这里我们复写他
+                                    errorCodeMap: {
+                                        [-1000]: '修改了数据验证错误信息'
+                                    }
+                                });
+                            });
+                            
+                        }</script></div><div><p><b id="API">API</b> <em>Object</em> <em>非必填</em><br><span id="demo-API" class="icon-demo">demo</span><br>定义防伪积分，绑定手机，获取验证码等 api接口 默认使用中台生产API（开发过程中也可用来替换测试环境API）<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 将API定义为测试环境的API
+        API: {
+            antifakecode: &#x27;http://wx-test1.by-health.com/scrmv2/antifakecode/antifakecodeIntegral&#x27;,
+            bindPhone: &#x27;http://wx-test1.by-health.com/scrmv2/message/sendValidateCode&#x27;,
+            sendValidateCode: &#x27;http://wx-test1.by-health.com/scrmv2/auth/consumer/loginByPhone&#x27;
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-API").onclick=function(){showDemo("参数：API",function(){new Points({targetId:"demo",API:{antifakecode:"http://wx-test1.by-health.com/scrmv2/antifakecode/antifakecodeIntegral",bindPhone:"http://wx-test1.by-health.com/scrmv2/message/sendValidateCode",sendValidateCode:"http://wx-test1.by-health.com/scrmv2/auth/consumer/loginByPhone"}})})}</script></div><div><p><b id="targetId">targetId</b> <em>String</em> <em>非必填</em><br><span id="demo-targetId" class="icon-demo">demo</span><br>使用默认模版时，默认模版挂载的目标HTHLelement Id （不填将挂载在body下）<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;customMountDom&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    // 将Points 挂载到 id为customMountDom 的HTMLelement上
+    new Points({
+        targetId: &#x27;customMountDom&#x27;,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-targetId").onclick=function(){showDemo("参数：targetId",function(){new Points({targetId:"customMountDom"})},'<div style="height: 200px" id="customMountDom"></div>')}</script></div><div><p><b id="id">id</b> <em>String</em> <em>非必填</em><br><span id="demo-id" class="icon-demo">demo</span><br>模板id（不填时系统将默认创建一个）<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        id: &#x27;myId&#x27;,
+    });
+    window.alert(document.getElementById(points.id).id);
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-id").onclick=function(){showDemo("参数：id",function(){var d=new Points({targetId:"demo",id:"myId"});window.alert(document.getElementById(d.id).id)})}</script></div><div><p><b id="autoMount">autoMount</b> <em>Boolean</em> <em>非必填</em><br><span id="demo-autoMount" class="icon-demo">demo</span><br>实例化Points时是否自动完成HTHLelement元素的挂载以及事件的处理，默认true；（false时需要通过Points.mount方法手动挂载）<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;button id=&quot;handleMount&quot;&gt;点击手动挂载Points&lt;/button&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        autoMount: false
+    });
+    
+    document.getElementById(&#x27;handleMount&#x27;).onclick = function(){
+        points.mount();
+    }
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-autoMount").onclick=function(){showDemo("参数：autoMount",function(){var t=new Points({targetId:"demo",autoMount:!1});document.getElementById("handleMount").onclick=function(){t.mount()}},'<div id="demo"><br/><button id="handleMount">手动挂载Points</button></div>')}</script></div><div><p><b id="onInit">onInit</b> <em>Function</em> <em>非必填</em><br><span id="demo-onInit" class="icon-demo">demo</span><br>初始化回调<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        onInit: function(){
+            window.alert(&#x27;Points初始化回调&#x27;);
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-onInit").onclick=function(){showDemo("参数：onInit",function(){new Points({targetId:"demo",onInit:function(){window.alert("Points初始化回调")}})})}</script></div><div><p><b id="onScan">onScan</b> <em>Function</em> <em>非必填</em> <em style="color:#b6b6b6">请在微信或营养管家App中测试demo</em><br><span id="demo-onScan" class="icon-demo">demo</span><br>扫码回调<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        onScan: function(res){
+            window.alert(&#x27;Points扫码回调，res为扫码结果&#x27; + res);
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-onScan").onclick=function(){showDemo("参数：onScan",function(){new Points({targetId:"demo",onScan:function(n){window.alert("Points扫码回调，res为扫码结果"+n)}})})}</script></div><div><p><b id="handleValidate">handleValidate</b> <em>Function</em> <em>非必填</em><br><span id="demo-handleValidate" class="icon-demo">demo</span><br>操作数据验证，用于追加验证逻辑处理，允许通过Promise来终止积分流程<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            antiFakeCode: &#x27;7866765487889967&#x27;,
+            phone: &#x27;13655229868&#x27;
+        },
+        handleValidate: function(res){
+            return new Promise(function(resolve, reject){
+                reject(new PointsError(&#x27;在表单验证通过之后，调用此方法；&lt;br/&gt;通过此方法可以追加对参数处理 ...&#x27;, -1000))
+            })
+            window.alert(&#x27;Points扫码回调，res为扫码结果&#x27; + res);
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-handleValidate").onclick=function(){showDemo("参数：handleValidate",function(){new Points({targetId:"demo",data:{antiFakeCode:"7866765487889967",phone:"13655229868"},handleValidate:function(e){return new Promise(function(e,n){n(new PointsError("在表单验证通过之后，调用此方法；<br/>通过此方法可以追加对参数处理，<br />还可以可以通过return Promise.reject()<br />来终止后续防伪积分流程。",-1e3))})}})})}</script></div><div><p><b id="onSubmit">onSubmit</b> <em>Function</em> <em>非必填</em><br><span id="demo-onSubmit" class="icon-demo">demo</span><br>积分成功回调<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        onSubmit: function(res){
+            window.alert(&#x27;Points积分成功回调，res为积分成功结果&#x27;);
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-onSubmit").onclick=function(){showDemo("参数：onSubmit",function(){new Points({targetId:"demo",onSubmit:function(n){window.alert("Points积分成功回调，res为积分成功结果")}})})}</script></div><div><p><b id="handleError">handleError</b> <em>Function</em> <em>非必填</em><br><span id="demo-handleError" class="icon-demo">demo</span><br>处理积分异常，用于处理需要调整的异常结果，允许通过中途吞掉Promise的catch来终止积分流程的异常结果处理<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;,
+        handleError: function(error){
+            // code = -1000 数据验证错误码
+            if (error.code === -1000) {
+                window.alert(&#x27;通过handleError处理错误，比如这里只处理数据验证错误！&#x27; + error.message);
+            } else {
+                // 其他错误不做处理，交给Points处理
+                throw error;
+            }
+        }
+    })
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-handleError").onclick=function(){showDemo("参数：handleError",function(){new Points({targetId:"demo",handleError:function(e){if(-1e3!==e.code)throw e;window.alert("通过handleError处理错误，比如这里只处理数据验证错误！\n"+e.message)}})})}</script></div><div><p><b id="verifyPhoneCountdown">verifyPhoneCountdown</b> <em>Object</em> <em>非必填</em><br><span id="demo-verifyPhoneCountdown" class="icon-demo">demo</span><br>获取手机验证码与倒计时设置<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            antiFakeCode: 7899678266561417,
+            phone: 13622809421
+        },
+        verifyPhone: true,
+        verifyPhoneCountdown: {
+            interval: 10, // 设为10秒倒计时
+            buttonText: &#x27;验证码&#x27;, // 设置获取验证码按钮的文字
+            countdownText: function(count){
+                // 接受一个方法复写倒计时文字 
+                return (&#x27;稍等&#x27; + count + &#x27;秒&#x27;)
+            }
+        }
+    })
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-verifyPhoneCountdown").onclick=function(){showDemo("参数：verifyPhoneCountdown",function(){new Points({targetId:"demo",data:{antiFakeCode:7899678266561417,phone:13622809421},verifyPhone:!0,verifyPhoneCountdown:{interval:10,buttonText:"验证码",countdownText:function(n){return"稍等"+n+"秒"}}})})}</script></div><h2 id="part3">Options 实例属性</h2><div><p><b id="setData">Points.setData</b> <em>Function</em><br><span id="demo-setData" class="icon-demo">demo</span><br>设置当前实例的data参数，这里做了对象的描述属性的代理，不能直接使用Points.data = {phone: '13665781168'}来定义data参数<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;
+    &lt;button id=&quot;setdatabtn&quot;&gt;点击设置参数phone=&quot;13622809940&quot;&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;
+    })
+    document.getElementById(&#x27;setdatabtn&#x27;).onclick = function(){
+        point.setData({
+            phone: &#x27;13622809940&#x27;
+        });
+    }
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-setData").onclick=function(){showDemo("属性：setData",function(){var t=new Points({targetId:"demo"});document.getElementById("setdatabtn").onclick=function(){t.setData({phone:"13622809940"})}},'<div id="demo"><button id="setdatabtn">点击设置参数phone="13622809940"</button></div>')}</script></div><div><p><b id="mount">Points.mount</b> <em>Function</em><br><span id="demo-mount" class="icon-demo">demo</span><br>将当前实例重新挂载、重置数据、绑定与事件、代理。<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demoa&quot;&gt;demoa&lt;/div&gt;
+&lt;button id=&quot;mountbtn&quot;&gt;点击把Points从demoa挂载到demob&lt;/button&gt;
+&lt;div id=&quot;demob&quot;&gt;demob&lt;/div&gt;
+&lt;script&gt;
+        var point = new Points({
+            targetId: &#x27;demoa&#x27;
+        })
+        document.getElementById(&#x27;mountbtn&#x27;).onclick = function(){
+            // point.mount(targetId, map);
+            // targetId：重置将挂载的targetId 非必填 默认使用原始targetId, 
+            // map：重置后的HTML id与字段的映射关系 非必填 默认使用原始映射关系
+            point.mount(&#x27;demob&#x27;);
+        }
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-mount").onclick=function(){showDemo("属性：mount",function(){var o=new Points({targetId:"demoa"});document.getElementById("mountbtn").onclick=function(){o.mount("demob")}},'<div id="demoa">demoa</div><button id="mountbtn">点击把Points从demoa挂载到demob</button><div id="demob">demob</div>')}</script></div><div><p id="$data"><b>Points.$data</b> <em>Object</em><br><span id="demo-$data" class="icon-demo">demo</span><br>获取当前实例参数<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;button id=&quot;$databtn&quot;&gt;获取参数point.$data&lt;/button&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: 13766564437
+        }
+    })
+    document.getElementById(&#x27;$databtn&#x27;).onclick = function(){
+        // 获取当前实例参数
+        window.alert(JSON.stringify(point.$data, null, 2))
+    }
+&lt;/script&gt;
+
+                        </code>
+                    </pre><script>document.getElementById("demo-$data").onclick=function(){showDemo("属性：$data",function(){var t=new Points({targetId:"demo",data:{phone:13766564437}});document.getElementById("$databtn").onclick=function(){window.alert(JSON.stringify(t.$data,null,2))}},'<div id="demo"><button id="$databtn">获取参数point.$data</button></div>')}</script></div><div><p id="prevData"><b>Points.prevData</b> <em>Object</em><br><span id="demo-prevData" class="icon-demo">demo</span><br>获取历史(请求\响应)数据<br></p><pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;button id=&quot;prevDatabtn&quot;&gt;获取上次查询结果point.prevData&lt;/button&gt;&lt;/div&gt;
+&lt;script&gt;
+    var point = new Points({
+        targetId: &#x27;demo&#x27;
+    })
+    document.getElementById(&#x27;prevDatabtn&#x27;).onclick = function(){
+        var prevData = point.prevData;
+        // 获取当前实例的历史数据
+        // prevData.request = &#x27;上次的查询数据&#x27;;
+        // prevData.response = &#x27;上次的查询结果数据&#x27;;
+        
+        window.alert(JSON.stringify(point.prevData, null, 2))
+    }
+&lt;/script&gt;
+                        </code>
+                    </pre><script>document.getElementById("demo-prevData").onclick=function(){showDemo("属性：prevData",function(){var t=new Points({targetId:"demo"});document.getElementById("prevDatabtn").onclick=function(){t.prevData;window.alert(JSON.stringify(t.prevData,null,2))}},'<div id="demo"><button id="prevDatabtn">获取上次查询结果point.prevData</button></div>')}</script></div><h2 id="part4">static 静态属性</h2><p><b id="PointsError">Points.PointsError</b> <em>Class</em><br><br>用于创建Points内部能处理的异常<br></p><pre>
+                    <code class="language-javascript">
+    // message错误信息 code错误码。
+    throw new PointsError(message, code);
+
+                    </code>
+                </pre><p><b id="tools">Points.tools</b><br><br>其他工具集<br></p><pre>
+                    <code class="language-javascript">
+    Points.tools = {
+        Modal, // Class 信息弹窗
+        Loading, // Class 加载 Loading
+        validate, // Object 表单验证工具
+        nativeAppJssdk, // 营养管家AppJssdk
+        // 整合微信与营养管家App的条形码与二维码扫码方法
+        scan:{
+            qrCode,
+            barCode
+        }
+    }
+
+                    </code>
+                </pre></div></article><footer><small>By-health FED</small></footer></section><script type="text/javascript" src="./points.js?73c54bfa4d3002ec165e"></script></body><script>var Modal = ___Points___.tools.Modal;
+    var PointsError = ___Points___.PointsError;
+    var Points=___Points___;
+    var demoModal = new Modal({
+        id: 'modaldemo',
+        style: {
+            close: { 
+                width: '20px',
+                height: '20px',
+                backgroundColor: 'red'
+            },
+            content: {
+                borderRadius: '6px',
+                width: '300px'
+            }
+        }
+    });
+    function showDemo(title, callback, html){
+        demoModal.create({
+            header: (title || 'demo'), 
+            article: html || '<div id="demo"></div>'
+        })
+        .then(function(){
+            if (typeof callback === 'function') {
+                callback()
+            }
+        });
+    }
+    initWechat();
+    document.querySelector('.menu').style.height = (window.innerHeight * .9) + 'px';
+    hljs.initHighlightingOnLoad();
     document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightBlock(block);

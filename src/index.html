@@ -7,9 +7,9 @@
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Points</title>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <script>
         function wechatAuth(data) {
             return fetch('https://yyj-test.by-health.com/scrm/wechatBH/jssdk', {
@@ -73,6 +73,7 @@
             margin: 10px auto;
             color: blue;
             display: block;
+            cursor: pointer;
         }
         .icon-demo::before {
             content: '\2720';
@@ -163,15 +164,17 @@
                     <p>HTML</p>
                     <small>在应用页面中创建挂载DOM</small>
                     <pre>
-                        <code class="language-html">&lt;div id=&quot;targetId&quot;&gt;&lt;/div&gt;</code>
+                        <code class="language-html">
+&lt;div id=&quot;targetId&quot;&gt;&lt;/div&gt;
+                        </code>
                     </pre>
                     <p>javaScript</p>
                     <small>实例一个Points</small>
                     <pre>
                         <code class="language-javascript">
-        var pointsStart = new Points({
-            targetId: 'targetId'
-        });
+var pointsStart = new Points({
+    targetId: 'targetId'
+});
                         </code>
                     </pre>
                 </div>
@@ -1095,13 +1098,8 @@
             }
         });
     }
-    
-</script>
-<script>
     initWechat();
     document.querySelector('.menu').style.height = (window.innerHeight * .9) + 'px';
-</script>
-<script>
     hljs.initHighlightingOnLoad();
     document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelectorAll('pre code').forEach((block) => {
@@ -1109,5 +1107,4 @@
         });
     });
 </script>
-
 </html>
