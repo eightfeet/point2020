@@ -61,8 +61,8 @@ class Points {
 		this.elementNodeMappingField = nodeMap(pointsId);
 
 		// 自定义表单输入元素
-		if (isObject(config.elementIdMapToFields)) {
-			this.elementNodeMappingField = config.elementIdMapToFields;
+		if (isObject(config.elementNodeMappingField)) {
+			this.elementNodeMappingField = config.elementNodeMappingField;
 			isCustomTemplate = true;
 		}
 		// 验证手机
@@ -106,7 +106,7 @@ class Points {
 		};
 
 		if (config.autoMount !== false) {
-			this.mount();
+			this.mount(config.targetId, config.elementNodeMappingField);
 		}
 
 		// 初始化
@@ -164,8 +164,8 @@ class Points {
 		} else {
 			isCustomTemplate = false;
 		}
+		this.data = Object.create(data);
 		if (!isCustomTemplate) {
-			console.log(7777, document.getElementById(targetId));
 			// 创建模板时数据直接写入到模板
 			createTemplate(
 				this.id,
@@ -182,7 +182,6 @@ class Points {
 			backfill(this.elementNodeMappingField, this.data);
 		}
 		this.setEvent();
-		this.data = Object.create(data);
 	}
 
 	/**

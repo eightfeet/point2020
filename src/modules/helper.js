@@ -125,7 +125,7 @@ export const backfill = (elementNodeMappingField, data) => {
 			id &&
 			id.tagName === 'INPUT'
 		) {
-			id.value = data[key];
+			id.value = data[key] || '';
 		}
 	});
 };

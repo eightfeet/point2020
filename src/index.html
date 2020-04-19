@@ -69,8 +69,10 @@
         .main {
             margin-right: 350px;
         }
-        .icon-demo {
+        .icon-demo{
             margin: 10px auto;
+            color: blue;
+            display: block;
         }
         .icon-demo::before {
             content: '\2720';
@@ -86,6 +88,10 @@
                 width: auto;
                 overflow-y: auto;
             }
+        }
+
+        #demo {
+            height: 300px;
         }
     </style>
 </head>
@@ -138,61 +144,138 @@
                 </li>
             </ul>
             <div class="main">
-                <h2 id="part1">快速开始</h2>
-                <p>HTML</p>
-                <small>在应用页面中创建挂载DOM</small>
-                <pre>
-                    <code class="language-html">&lt;div id=&quot;targetId&quot;&gt;&lt;/div&gt;</code>
-                </pre>
-                <p>javaScript</p>
-                <small>实例一个Points</small>
-                <pre>
-                    <code class="language-javascript">
-    var pointsStart = new Points({
-        targetId: 'targetId'
+                <div>
+                    <h2 id="part1">快速开始</h2>
+                    <p>HTML</p>
+                    <small>在应用页面中创建挂载DOM</small>
+                    <pre>
+                        <code class="language-html">&lt;div id=&quot;targetId&quot;&gt;&lt;/div&gt;</code>
+                    </pre>
+                    <p>javaScript</p>
+                    <small>实例一个Points</small>
+                    <pre>
+                        <code class="language-javascript">
+        var pointsStart = new Points({
+            targetId: 'targetId'
+        });
+                        </code>
+                    </pre>
+                </div>
+                    <br />
+                    <h2 id="part2">Parame 创建实例参数</h2>
+                <div>
+                    <p><b id="data">data</b> <em>Object</em> <em>非必填</em> <br />
+                        <span id="demo-data" class="icon-demo">demo</span><br />初始化参数，参数将分发到各个接口（防伪积分，绑定手机，获取验证码）</p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: &#x27;13114876522&#x27;, // 积分手机
+            antiFakeCode: &#x27;7898589819759507&#x27;, // 16位产品防伪码
+        }
+        // openid: &#x27;xxxx&#x27;, 微信openid，绑定手机时用到
+        // ...其他参考中台api对应参数
     });
-                    </code>
-                </pre>
-                <p>Example</p>
-                <div id="targetId" style="max-width: 400px;"></div>
-                <br />
-                <h2 id="part2">Parame 创建实例参数</h2>
-                <p><b id="data">data</b> <em>Object</em> <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />初始化参数，参数将分发到各个接口（防伪积分，绑定手机，获取验证码）</p>
-                <pre>
-                    <code class="language-javascript">
-    data: {
-        phone: '13114876522', // 积分手机
-        antiFakeCode: 'xxx...', // 16位产品防伪码
-        openid: 'xxxx', // 微信openid，绑定手机时用到
-        verificationCode: '2453', // 手机验证码，绑定手机或验证手机时用到
-        ...其他参考中台api对应参数
-    }
-                    </code>
-                </pre>
-                <p>
-                    <b id="elementNodeMappingField">elementNodeMappingField</b> 
-                    <em>Object</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    自定义HTHLelement Id 与字段(表单/事件)的映射关系<br />
-                    <em>
-                        注意：定义此参数意味着用户将弃用Points创建的模板，
-                        将使用自己页面的HTML元素托管Points的表单与事件，
-                        请务必使用HTMLelement Id 作为映射值
-                    </em>
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    elementNodeMappingField: {
-        phone: "电话号码输入框Id"
-        verificationCode: "验证码输入框Id"
-        antiFakeCode: "防伪码输入框Id"
-        scan: "扫描防伪码按钮Id"
-        sendVerificationCode: "发送验证码按钮Id"
-        submit: "提交按钮Id"
-    }
-                    </code>
-                </pre>
-
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-data').onclick = function(){
+                            showDemo('参数：data', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    data: {
+                                        phone: '13114876522', // 积分手机
+                                        antiFakeCode: '7898589819759507', // 16位产品防伪码
+                                        // ...其他参考中台api对应参数
+                                    }
+                                });
+                            });
+                            
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="elementNodeMappingField">elementNodeMappingField</b> 
+                        <em>Object</em> 
+                        <em>非必填</em> <br /><span id="demo-elementNodeMappingField" class="icon-demo">demo</span><br />
+                        自定义HTHLelement Id 与字段(表单/事件)的映射关系<br />
+                        <em>
+                            注意：定义此参数意味着用户将弃用Points创建的模板，
+                            将使用自己页面的HTML元素托管Points的表单与事件，
+                            请务必使用HTMLelement Id 作为映射值
+                        </em>
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div&gt;
+    &lt;h3&gt;自定义UI&lt;/h3&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;custom_phone&quot;&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;custom_verificationCode&quot;&gt;&lt;button id=&quot;custom_sendVerificationCode&quot;&gt;发送验证码&lt;/button&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;custom_antiFakeCode&quot;&gt;&lt;button id=&quot;custom_scan&quot;&gt;扫描防伪码&lt;/button&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;button id=&quot;custom_submit&quot;&gt;马上积分&lt;/button&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        // 默认参数
+        data: {
+            phone: &#x27;13114876522&#x27;, // 积分手机
+            antiFakeCode: &#x27;7898589819759507&#x27;, // 16位产品防伪码
+            // ...其他参考中台api对应参数
+        },
+        // 设置需要验证手机号码
+        verifyPhone: true,
+        // 自定义UI时定义元素映射
+        elementNodeMappingField: {
+            phone: &quot;custom_phone&quot;,
+            verificationCode: &quot;custom_verificationCode&quot;,
+            antiFakeCode: &quot;custom_antiFakeCode&quot;,
+            scan: &quot;custom_scan&quot;,
+            sendVerificationCode: &quot;custom_sendVerificationCode&quot;,
+            submit: &quot;custom_submit&quot;
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-elementNodeMappingField').onclick = function(){
+                            showDemo('参数：elementNodeMappingField', function(){
+                                var point = new Points({
+                                    // 默认参数
+                                    data: {
+                                        phone: '13114876522', // 积分手机
+                                        antiFakeCode: '7898589819759507', // 16位产品防伪码
+                                        // ...其他参考中台api对应参数
+                                    },
+                                    // 验证手机号码
+                                    verifyPhone: true,
+                                    // 自定义UI时定义元素映射
+                                    elementNodeMappingField: {
+                                        phone: "custom_phone",
+                                        verificationCode: "custom_verificationCode",
+                                        antiFakeCode: "custom_antiFakeCode",
+                                        scan: "custom_scan",
+                                        sendVerificationCode: "custom_sendVerificationCode",
+                                        submit: "custom_submit"
+                                    }
+                                });
+                            }, '<div><h3>自定义UI</h3>'+
+                                '<div><input type="text" id="custom_phone" /></div>'+
+                                '<div><input type="text" id="custom_verificationCode" />'+
+                                '<button id="custom_sendVerificationCode" >发送验证码</button></div>'+
+                                '<div><input type="text" id="custom_antiFakeCode" />'+
+                                '<button id="custom_scan" >扫描防伪码</button></div>'+
+                                '<div><button id="custom_submit" >马上积分</button></div></div>'
+                            );
+                            
+                        }
+                    </script>
+                </div>
                 <p>
                     <b id="verifyPhone">verifyPhone</b> 
                     <em>Boolean</em> 
@@ -512,6 +595,7 @@
 </body>
 <script>
     var Modal = ___Points___.tools.Modal;
+    var Points=___Points___;
     var demoModal = new Modal({
         id: 'modaldemo',
         style: {
@@ -526,14 +610,18 @@
             }
         }
     });
-    function showDemo(){
-        demoModal.create({header: 'demo', article: '这是一个弹窗'})
-        .then(() => console.log('弹窗已打开'));
+    function showDemo(title, callback, html){
+        demoModal.create({
+            header: (title || 'demo'), 
+            article: html || '<div id="demo"></div>'
+        })
+        .then(function(){
+            if (typeof callback === 'function') {
+                callback()
+            }
+        });
     }
     
-    var pointsStart = new ___Points___({
-        targetId: 'targetId'
-    });
 </script>
 <script>
     initWechat();
