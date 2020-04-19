@@ -624,41 +624,87 @@
                         }
                     </script>
                 </div>
-                <p>
-                    <b id="onScan">onScan</b> 
-                    <em>Function</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    扫码回调<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.onScan = function(code){
-        // code: 防伪码
-    }
-                    </code>
-                </pre>
+                <div>
+                    <p>
+                        <b id="onScan">onScan</b> 
+                        <em>Function</em> 
+                        <em>非必填</em> <em style="color: rgb(182, 182, 182);">请在微信或营养管家App中测试demo</em><br /><span id="demo-onScan" class="icon-demo">demo</span> <br />
+                        扫码回调<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        onScan: function(res){
+            window.alert(&#x27;Points扫码回调，res为扫码结果&#x27; + res);
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-onScan').onclick = function(){
+                            showDemo('参数：onScan', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    onScan: function(res){
+                                        window.alert('Points扫码回调，res为扫码结果' + res);
+                                    }
+                                });
+                            });
+                        }
+                    </script>
+                </div>
 
-                <p>
-                    <b id="handleValidate">handleValidate</b> 
-                    <em>Function</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    操作数据验证，用于追加验证逻辑处理，允许通过Promise来终止积分流程<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.handleValidate = function(data){
-        // data 提交的参数
-        return new Promise(function(resolve, reject){
-            if () {
-                resolve()
-            } else {
-                reject(new Points.PointsError('出错了', 2009))
-            }
-        })
-    }
-                    </code>
-                </pre>
-
+                <div>
+                    <p>
+                        <b id="handleValidate">handleValidate</b> 
+                        <em>Function</em> 
+                        <em>非必填</em> <br /><span id="demo-handleValidate" class="icon-demo">demo</span><br />
+                        操作数据验证，用于追加验证逻辑处理，允许通过Promise来终止积分流程<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            antiFakeCode: &#x27;7866765487889967&#x27;,
+            phone: &#x27;13655229868&#x27;
+        },
+        handleValidate: function(res){
+            return new Promise(function(resolve, reject){
+                reject(new PointsError(&#x27;在表单验证通过之后，调用此方法；&lt;br/&gt;通过此方法可以追加对参数处理 ...&#x27;, -1000))
+            })
+            window.alert(&#x27;Points扫码回调，res为扫码结果&#x27; + res);
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-handleValidate').onclick = function(){
+                            showDemo('参数：handleValidate', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    data: {
+                                        antiFakeCode: '7866765487889967',
+                                        phone: '13655229868'
+                                    },
+                                    handleValidate: function(res){
+                                        return new Promise(function(resolve, reject){
+                                            reject(new PointsError('在表单验证通过之后，调用此方法；<br/>通过此方法可以追加对参数处理，<br />还可以可以通过return Promise.reject()<br />来终止后续防伪积分流程。', -1000))
+                                        })
+                                        window.alert('Points扫码回调，res为扫码结果' + res);
+                                    }
+                                });
+                            });
+                        }
+                    </script>
+                </div>
                 <p>
                     <b id="onSubmit">onSubmit</b> 
                     <em>Function</em> 
@@ -812,6 +858,7 @@
 </body>
 <script>
     var Modal = ___Points___.tools.Modal;
+    var PointsError = ___Points___.PointsError;
     var Points=___Points___;
     var demoModal = new Modal({
         id: 'modaldemo',
