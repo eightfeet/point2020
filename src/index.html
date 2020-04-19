@@ -591,20 +591,39 @@
                         }
                     </script>
                 </div>
-                <p>
-                    <b id="onInit">onInit</b> 
-                    <em>Function</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    初始化回调<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.onInit = function(){
-        // 实例创建时调用
-    }
-                    </code>
-                </pre>
-
+                <div>
+                    <p>
+                        <b id="onInit">onInit</b> 
+                        <em>Function</em> 
+                        <em>非必填</em> <br /><span id="demo-onInit" class="icon-demo">demo</span><br />
+                        初始化回调<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        onInit: function(){
+            window.alert(&#x27;Points初始化回调&#x27;);
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-onInit').onclick = function(){
+                            showDemo('参数：onInit', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    onInit: function(){
+                                        window.alert('Points初始化回调');
+                                    }
+                                });
+                            });
+                        }
+                    </script>
+                </div>
                 <p>
                     <b id="onScan">onScan</b> 
                     <em>Function</em> 
