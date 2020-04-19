@@ -276,123 +276,321 @@
                         }
                     </script>
                 </div>
-                <p>
-                    <b id="verifyPhone">verifyPhone</b> 
-                    <em>Boolean</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    是否验证手机号码 默认 false
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.verifyPhone = true
-                    </code>
-                </pre>
+                <div>
+                    <p>
+                        <b id="verifyPhone">verifyPhone</b> 
+                        <em>Boolean</em> 
+                        <em>非必填</em> <br /><span id="demo-verifyPhone" class="icon-demo">demo</span><br />
+                        是否验证手机号码 默认 false
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 验证手机
+        verifyPhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-verifyPhone').onclick = function(){
+                            showDemo('参数：verifyPhone', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    // 验证手机
+                                    verifyPhone: true,
+                                });
+                            });
+                            
+                        }
+                    </script>
+                </div>
 
-                <p>
-                    <b id="bindPhone">bindPhone</b> 
-                    <em>Boolean</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    是否绑定手机号码 默认 false<br />
-                    <em>注意：当开启绑定手机号码时需要向绑定接口传openid参数，可在实例Points时通过data参数传入，也可以通过Points.setData({openid: 'xxx'})方法写入</em>
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.verifyPhone = true
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="disabledPhone">disabledPhone</b> 
-                    <em>Boolean</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    是否禁止输入/修改手机号码 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.disabledPhone = true
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="hidePhone">hidePhone</b> 
-                    <em>Boolean</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    隐藏手机号码输入框 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.disabledPhone = true
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="errorCodeMap">errorCodeMap</b> 
-                    <em>Object</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    自定义错误码与错误信息，用于复写接口返回code对应的message<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.errorCodeMap = {
-        404: '对不起！迷路了。',
-        500: '服务器摔了一跤！',
-        ...
+                <div>
+                    <p>
+                        <b id="bindPhone">bindPhone</b> 
+                        <em>Boolean</em> 
+                        <em>非必填</em> <br /><span id="demo-bindPhone" class="icon-demo">demo</span><br />
+                        是否绑定手机号码 默认 false<br />
+                        <em>注意：当开启绑定手机号码时需要向绑定接口传openid参数，可在实例Points时通过data参数传入，也可以通过Points.setData({openid: 'xxx'})方法写入</em>
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 绑定手机注册为会员
+        bindPhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-bindPhone').onclick = function(){
+                            showDemo('参数：bindPhone', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    // 绑定手机注册为会员
+                                    bindPhone: true,
+                                });
+                            });
+                            
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="disabledPhone">disabledPhone</b> 
+                        <em>Boolean</em> 
+                        <em>非必填</em> <br /><span id="demo-disabledPhone" class="icon-demo">demo</span><br />
+                        是否禁止输入/修改手机号码 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: &#x27;13760887658&#x27;
+        },
+        // 禁止修改手机号码
+        disabledPhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-disabledPhone').onclick = function(){
+                            showDemo('参数：disabledPhone', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    data: {
+                                        phone: '13760887658'
+                                    },
+                                    // 绑定手机注册为会员
+                                    disabledPhone: true,
+                                });
+                            });
+                            
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="hidePhone">hidePhone</b> 
+                        <em>Boolean</em> 
+                        <em>非必填</em> <br /><span id="demo-hidePhone" class="icon-demo">demo</span><br />
+                        隐藏手机号码输入框 默认 false，仅适用于非自定义模板，自定义模板需额外自行处理<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        data: {
+            phone: &#x27;13760887658&#x27;
+        },
+        // 隐藏手机号码
+        hidePhone: true,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-hidePhone').onclick = function(){
+                            showDemo('参数：hidePhone', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    data: {
+                                        phone: '13760887658'
+                                    },
+                                    // 隐藏手机号码
+                                    hidePhone: true,
+                                });
+                            });
+                            
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="errorCodeMap">errorCodeMap</b> 
+                        <em>Object</em> 
+                        <em>非必填</em> <br /><span id="demo-errorCodeMap" class="icon-demo">demo</span><br />
+                        自定义错误码与错误信息，用于复写接口返回code对应的message<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 验证错误的code为-1000，这里我们复写他
+        errorCodeMap: {
+            [-1000]: &#x27;修改了数据验证错误信息&#x27;
+        },
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-errorCodeMap').onclick = function(){
+                            showDemo('参数：errorCodeMap', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    // 验证错误的code为-1000，这里我们复写他
+                                    errorCodeMap: {
+                                        [-1000]: '修改了数据验证错误信息'
+                                    }
+                                });
+                            });
+                            
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="API">API</b> 
+                        <em>Object</em> 
+                        <em>非必填</em> <br /><span id="demo-API" class="icon-demo">demo</span><br />
+                        定义防伪积分，绑定手机，获取验证码等 api接口 默认使用中台生产API（开发过程中也可用来替换测试环境API）<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    new Points({
+        targetId: &#x27;demo&#x27;,
+        // 将API定义为测试环境的API
+        API: {
+            antifakecode: &#x27;http://wx-test1.by-health.com/scrmv2/antifakecode/antifakecodeIntegral&#x27;,
+            bindPhone: &#x27;http://wx-test1.by-health.com/scrmv2/message/sendValidateCode&#x27;,
+            sendValidateCode: &#x27;http://wx-test1.by-health.com/scrmv2/auth/consumer/loginByPhone&#x27;
+        }
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-API').onclick = function(){
+                            showDemo('参数：API', function(){
+                                var point = new Points({
+                                    targetId: 'demo',
+                                    // 将API定义为测试环境的API
+                                    API: {
+                                        antifakecode: 'http://wx-test1.by-health.com/scrmv2/antifakecode/antifakecodeIntegral',
+                                        bindPhone: 'http://wx-test1.by-health.com/scrmv2/message/sendValidateCode',
+                                        sendValidateCode: 'http://wx-test1.by-health.com/scrmv2/auth/consumer/loginByPhone'
+                                    }
+                                });
+                            });
+                            
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="targetId">targetId</b> 
+                        <em>String</em> 
+                        <em>非必填</em> <br /><span id="demo-targetId" class="icon-demo">demo</span><br />
+                        使用默认模版时，默认模版挂载的目标HTHLelement Id （不填将挂载在body下）<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;customMountDom&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    // 将Points 挂载到 id为customMountDom 的HTMLelement上
+    new Points({
+        targetId: &#x27;customMountDom&#x27;,
+    });
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-targetId').onclick = function(){
+                            showDemo('参数：targetId', function(){
+                                var point = new Points({
+                                    targetId: 'customMountDom',
+                                });
+                            }, '<div style="height: 200px" id="customMountDom"></div>');
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="id">id</b> 
+                        <em>String</em> 
+                        <em>非必填</em> <br /><span id="demo-id" class="icon-demo">demo</span><br />
+                        模板id（不填时系统将默认创建一个）<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        id: &#x27;myId&#x27;,
+    });
+    window.alert(document.getElementById(points.id).id);
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-id').onclick = function(){
+                            showDemo('参数：id', function(){
+                                var points = new Points({
+                                    targetId: 'demo',
+                                    id: 'myId',
+                                });
+                                window.alert(document.getElementById(points.id).id);
+                            });
+                        }
+                    </script>
+                </div>
+                <div>
+                    <p>
+                        <b id="autoMount">autoMount</b> 
+                        <em>Boolean</em> 
+                        <em>非必填</em> <br /><span id="demo-autoMount" class="icon-demo">demo</span><br />
+                        实例化Points时是否自动完成HTHLelement元素的挂载以及事件的处理，默认true；（false时需要通过Points.mount方法手动挂载）<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;
+&lt;button id=&quot;handleMount&quot;&gt;点击手动挂载Points&lt;/button&gt;
+&lt;script&gt;
+    var points = new Points({
+        targetId: &#x27;demo&#x27;,
+        autoMount: false
+    });
+    
+    document.getElementById(&#x27;handleMount&#x27;).onclick = function(){
+        points.mount();
     }
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="API">API</b> 
-                    <em>Object</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    定义防伪积分，绑定手机，获取验证码等 api接口 默认使用中台生产API（开发过程中也可用来替换测试环境API）<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.API = {
-        antifakecode: '积分防伪对应的接口', 
-        bindPhone: '绑定手机对应的接口', 
-        sendValidateCode: '获取验证码对应的接口', 
-    }
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="targetId">targetId</b> 
-                    <em>String</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    使用默认模版时，默认模版挂载的目标HTHLelement Id （不填将挂载在body下）<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.targetId = 'targetId'
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="id">id</b> 
-                    <em>String</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    模板id（不填时系统将默认创建一个）<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.id = 'id'
-                    </code>
-                </pre>
-
-                <p>
-                    <b id="autoMount">autoMount</b> 
-                    <em>Boolean</em> 
-                    <em>非必填</em> <br /><span id="demo-" class="icon-demo">demo</span><br />
-                    实例化Points时是否自动完成HTHLelement元素的挂载以及事件的处理，默认true；（false时需要通过Points.mount方法手动挂载）<br />
-                </p>
-                <pre>
-                    <code class="language-javascript">
-    Points.id = 'id'
-                    </code>
-                </pre>
-
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        document.getElementById('demo-autoMount').onclick = function(){
+                            showDemo('参数：autoMount', function(){
+                                var points = new Points({
+                                    targetId: 'demo',
+                                    autoMount: false
+                                });
+                                
+                                document.getElementById('handleMount').onclick = function(){
+                                    points.mount();
+                                }
+                            }, '<div id="demo"><br/><button id="handleMount">手动挂载Points</button></div>');
+                        }
+                    </script>
+                </div>
                 <p>
                     <b id="onInit">onInit</b> 
                     <em>Function</em> 
