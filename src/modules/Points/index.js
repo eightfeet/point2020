@@ -314,7 +314,6 @@ class Points {
 				}
 			})
 			.catch(err => {
-				console.log(9999, this.message);
 				if (err instanceof PointsError) {
 					handleErrorCode(err, this.errorCodeMap)
 						.catch(err => {

@@ -143,6 +143,7 @@
                         <li><a href="#handleValidate">handleValidate</a></li>
                         <li><a href="#onInit">onInit</a></li>
                         <li><a href="#onSubmit">onSubmit</a></li>
+                        <li><a href="#onHideMessage">onHideMessage</a></li>
                         <li><a href="#verifyPhoneCountdown">verifyPhoneCountdown</a></li>
                     </ul>
                 </li>
@@ -809,6 +810,76 @@ var pointsStart = new Points({
                         }
                     </script>
                 </div>
+
+
+
+                <div>
+                    <p>
+                        <b id="onCloseMessage">onCloseMessage</b> 
+                        <em>Function</em> 
+                        <em>非必填</em> <br /><span id="demo-onCloseMessage" class="icon-demo">demo</span><br />
+                        关闭异常处理结果时的回调(比如onCloseMessage重新唤醒积分窗口)<br />
+                    </p>
+                    <pre>
+                        <code class="language-html">
+
+&lt;script&gt;
+    // 创建挂载积分弹窗
+    var demoModal = new Points.Modal({...parame});
+    function creatPopDemo() {
+        demoModal.create({
+            artical: &#x27;&lt;div id=&quot;demo&quot;&gt;&lt;/div&gt;&#x27;
+        }).then(function(){
+            // 创建积分模块
+            createPoints();
+        })
+    }
+
+    function createPoints() {
+        var point = new Points({
+            targetId: &#x27;demo&#x27;,
+            handleError: function(error){
+                // 异常处理时移除挂载积分弹窗
+                demoModal.hide()
+            },
+            onCloseMessage: function(error){
+                // 关闭异常弹窗时重新创建挂载积分弹窗
+                creatPopDemo();
+            }
+        })
+    }
+
+    creatPopDemo();
+&lt;/script&gt;
+                        </code>
+                    </pre>
+                    <script>
+                        function initPop(){
+                            var point = new Points({
+                                targetId: 'demo',
+                                handleError: function(err){
+                                    demoModal.hide();
+                                    throw err
+                                },
+                                onCloseMessage: function(error){
+                                    console.log('???', point)
+                                    demoModal.create({
+                                        header: '参数：onCloseMessage', 
+                                        article: '<div id="demo"></div>'
+                                    }).then(function(){
+                                        initPop();
+                                    });
+                                }
+                            })
+                        };
+                        document.getElementById('demo-onCloseMessage').onclick = function(){
+                            showDemo('参数：onCloseMessage', initPop);
+                        }
+                    </script>
+                </div>
+
+
+
                 <div>
                     <p>
                         <b id="verifyPhoneCountdown">verifyPhoneCountdown</b> 
