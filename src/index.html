@@ -43,6 +43,8 @@
                 // document.getElementById('QrDom').style.display = 'none'
             });
         }
+
+        initWechat();
     </script>
     <style>
         em {
@@ -86,8 +88,11 @@
             }
             .menu {
                 position: relative;
+                right: 0;
+                top: 0;
+                height: auto;
                 width: auto;
-                overflow-y: auto;
+                overflow-y: visible;
             }
         }
 
@@ -1098,7 +1103,7 @@ var pointsStart = new Points({
             }
         });
     }
-    initWechat();
+    
     document.querySelector('.menu').style.height = (window.innerHeight * .9) + 'px';
     hljs.initHighlightingOnLoad();
     document.addEventListener('DOMContentLoaded', (event) => {

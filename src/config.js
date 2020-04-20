@@ -12,6 +12,9 @@ export const messageParame = {
 	style: {
 		close: {
 			fontStyle: 'normal'
+		},
+		content: {
+			maxWidth: '300px'
 		}
 	}
 };

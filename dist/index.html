@@ -29,7 +29,9 @@
                 console.log('微信授权失败', err);
                 // document.getElementById('QrDom').style.display = 'none'
             });
-        }</script><style>em{font-style:italic;font-size:smaller}.by-health-points-message_overlay,.modaldemo_overlay{position:fixed!important}.menu{position:fixed;width:300px;right:0;top:0;overflow-y:visible}.menu a{text-decoration:none}.main{margin-right:350px}.icon-demo{margin:10px auto;color:#00f;display:block}.icon-demo::before{content:'\2720';padding-right:10px}@media (max-width:767px){.main{margin-right:0}.menu{position:relative;width:auto;overflow-y:auto}}#demo{height:300px}#demoa,#demob{border:1px solid #aaa;margin:10px}#setdatabtn{margin:20px}#mountbtn{display:block;margin:0 auto}</style></head><body><section><header><h1>Points 防伪积分模块</h1></header><article><ul class="menu"><li><a href="#part1">快速开始</a></li><li><a href="#part2">Parame 创建实例参数</a><ul><li><a href="#data">data</a></li><li><a href="#elementNodeMappingField">elementNodeMappingField</a></li><li><a href="#verifyPhone">verifyPhone</a></li><li><a href="#bindPhone">bindPhone</a></li><li><a href="#disabledPhone">disabledPhone</a></li><li><a href="#hidePhone">hidePhone</a></li><li><a href="#errorCodeMap">errorCodeMap</a></li><li><a href="#API">API</a></li><li><a href="#targetId">targetId</a></li><li><a href="#id">id</a></li><li><a href="#autoMount">autoMount</a></li><li><a href="#onScan">onScan</a></li><li><a href="#handleError">handleError</a></li><li><a href="#handleValidate">handleValidate</a></li><li><a href="#onInit">onInit</a></li><li><a href="#onSubmit">onSubmit</a></li><li><a href="#verifyPhoneCountdown">verifyPhoneCountdown</a></li></ul></li><li><a href="#part3">Options 实例属性</a><ul><li><a href="#setData">Points.setData</a></li><li><a href="#mount">Points.mount</a></li><li><a href="#$data">Points.$data</a></li><li><a href="#prevData">Points.prevData</a></li></ul></li><li><a href="#part4">static 静态属性</a><ul><li><a href="#PointsError">Points.PointsError</a></li><li><a href="#tools">Points.tools</a></li></ul></li></ul><div class="main"><div><h2 id="part1">快速开始</h2><p>HTML</p><small>在应用页面中创建挂载DOM</small><pre>
+        }
+
+        initWechat();</script><style>em{font-style:italic;font-size:smaller}.by-health-points-message_overlay,.modaldemo_overlay{position:fixed!important}.menu{position:fixed;width:300px;right:0;top:0;overflow-y:visible}.menu a{text-decoration:none}.main{margin-right:350px}.icon-demo{margin:10px auto;color:#00f;display:block;cursor:pointer}.icon-demo::before{content:'\2720';padding-right:10px}@media (max-width:767px){.main{margin-right:0}.menu{position:relative;right:0;top:0;height:auto;width:auto;overflow-y:visible}}#demo{height:300px}#demoa,#demob{border:1px solid #aaa;margin:10px}#setdatabtn{margin:20px}#mountbtn{display:block;margin:0 auto}</style></head><body><section><header><h1>Points 防伪积分模块</h1></header><article><ul class="menu"><li><a href="#part1">快速开始</a></li><li><a href="#part2">Parame 创建实例参数</a><ul><li><a href="#data">data</a></li><li><a href="#elementNodeMappingField">elementNodeMappingField</a></li><li><a href="#verifyPhone">verifyPhone</a></li><li><a href="#bindPhone">bindPhone</a></li><li><a href="#disabledPhone">disabledPhone</a></li><li><a href="#hidePhone">hidePhone</a></li><li><a href="#errorCodeMap">errorCodeMap</a></li><li><a href="#API">API</a></li><li><a href="#targetId">targetId</a></li><li><a href="#id">id</a></li><li><a href="#autoMount">autoMount</a></li><li><a href="#onScan">onScan</a></li><li><a href="#handleError">handleError</a></li><li><a href="#handleValidate">handleValidate</a></li><li><a href="#onInit">onInit</a></li><li><a href="#onSubmit">onSubmit</a></li><li><a href="#verifyPhoneCountdown">verifyPhoneCountdown</a></li></ul></li><li><a href="#part3">Options 实例属性</a><ul><li><a href="#setData">Points.setData</a></li><li><a href="#mount">Points.mount</a></li><li><a href="#$data">Points.$data</a></li><li><a href="#prevData">Points.prevData</a></li></ul></li><li><a href="#part4">static 静态属性</a><ul><li><a href="#PointsError">Points.PointsError</a></li><li><a href="#tools">Points.tools</a></li></ul></li></ul><div class="main"><div><h2 id="part1">快速开始</h2><p>HTML</p><small>在应用页面中创建挂载DOM</small><pre>
                         <code class="language-html">
 &lt;div id=&quot;targetId&quot;&gt;&lt;/div&gt;
                         </code>
@@ -393,7 +395,7 @@ var pointsStart = new Points({
     }
 
                     </code>
-                </pre></div></article><footer><small>By-health FED</small></footer></section><script type="text/javascript" src="./points.js?73c54bfa4d3002ec165e"></script></body><script>var Modal = ___Points___.tools.Modal;
+                </pre></div></article><footer><small>By-health FED</small></footer></section><script type="text/javascript" src="./points.js?4e19ac57ca7a8b7eb22a"></script></body><script>var Modal = ___Points___.tools.Modal;
     var PointsError = ___Points___.PointsError;
     var Points=___Points___;
     var demoModal = new Modal({
@@ -421,7 +423,7 @@ var pointsStart = new Points({
             }
         });
     }
-    initWechat();
+    
     document.querySelector('.menu').style.height = (window.innerHeight * .9) + 'px';
     hljs.initHighlightingOnLoad();
     document.addEventListener('DOMContentLoaded', (event) => {
