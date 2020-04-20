@@ -318,34 +318,37 @@ class Points {
 				if (err instanceof PointsError) {
 					handleErrorCode(err, this.errorCodeMap)
 						.catch(err => {
-							if (typeof this.onCloseMessage === 'function') {
-								this.message.state.onCancel = () => {
-									this.onCloseMessage({
-										message: err.message,
-										code: err.code
-									});
-								};
-							}
-							
-							this.message.create({
-								header: '<h3>温馨提示</h3>',
-								article: err.message,
-								footer: '<button class="by-health-points-message_button">确定</button>'
-							})
-								.then(() => {
-									const btn = document.getElementById(this.message.state.id).querySelector('.by-health-points-message_button');
-									btn.onclick = () => {
-										this.message.hide();
-										if (typeof this.onCloseMessage === 'function') {
-											this.onCloseMessage({
-												message: err.message,
-												code: err.code
-											});
-										}
-									};
-								});
+							this.handleErrorMessage(err);
 						});
 				}
+			});
+	}
+
+	handleErrorMessage = err => {
+		if (typeof this.onCloseMessage === 'function') {
+			this.message.state.onCancel = () => {
+				this.onCloseMessage({
+					message: err.message,
+					code: err.code
+				});
+			};
+		}
+		this.message.create({
+			header: '<h3>温馨提示</h3>',
+			article: err.message,
+			footer: '<button class="by-health-points-message_button">确定</button>'
+		})
+			.then(() => {
+				const btn = document.getElementById(this.message.state.id).querySelector('.by-health-points-message_button');
+				btn.onclick = () => {
+					this.message.hide();
+					if (typeof this.onCloseMessage === 'function') {
+						this.onCloseMessage({
+							message: err.message,
+							code: err.code
+						});
+					}
+				};
 			});
 	}
 
@@ -354,18 +357,24 @@ class Points {
 	 */
 	sendVerificationCode = () => {
 		const { phone } = this.data;
-		const error = validate({
-			VPhone: phone
-		});
-		if (error) {
-			this.message.create({
-				article: error
-			});
-			console.error(error);
-			return;
-		}
+		
 		this.loading.show();
-		sendValidateCode(phone, this.API.sendValidateCode)
+		Promise.resolve()
+			.then(() => {
+				const error = validate({
+					VPhone: phone
+				});
+				if (error) {
+					// 处理验证结果
+					throw new PointsError(error, -1000);
+				}
+			})
+			.then(() => {
+				return sendValidateCode(phone, this.API.sendValidateCode)
+					.catch(err => {
+						throw new PointsError(err.message, err.code);
+					});
+			})
 			.then(() => {
 				this.loading.hide();
 				const element = document.getElementById(this.elementNodeMappingField.sendVerificationCode);
@@ -375,10 +384,7 @@ class Points {
 			})
 			.catch(err => {
 				this.loading.hide();
-				this.message.create({
-					article: err.message
-				});
-				console.error(err);
+				this.handleErrorMessage(err);
 			});
 	}
 }
