@@ -113,6 +113,9 @@ class Points {
 		if (typeof config.onInit === 'function') {
 			config.onInit();
 		}
+
+		// Message关闭回调
+		this.onCloseMessage = config.onCloseMessage;
 	}
 
 	static PointsError = PointsError
@@ -311,9 +314,19 @@ class Points {
 				}
 			})
 			.catch(err => {
+				console.log(9999, this.message);
 				if (err instanceof PointsError) {
 					handleErrorCode(err, this.errorCodeMap)
 						.catch(err => {
+							if (typeof this.onCloseMessage === 'function') {
+								this.message.state.onCancel = () => {
+									this.onCloseMessage({
+										message: err.message,
+										code: err.code
+									});
+								};
+							}
+							
 							this.message.create({
 								header: '<h3>温馨提示</h3>',
 								article: err.message,
@@ -323,6 +336,12 @@ class Points {
 									const btn = document.getElementById(this.message.state.id).querySelector('.by-health-points-message_button');
 									btn.onclick = () => {
 										this.message.hide();
+										if (typeof this.onCloseMessage === 'function') {
+											this.onCloseMessage({
+												message: err.message,
+												code: err.code
+											});
+										}
 									};
 								});
 						});

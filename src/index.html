@@ -214,7 +214,10 @@ var pointsStart = new Points({
                                         phone: '13114876522', // 积分手机
                                         antiFakeCode: '7898589819759507', // 16位产品防伪码
                                         // ...其他参考中台api对应参数
-                                    }
+                                    },
+                                    onCloseMessage: function(err){
+                                        console.log('关闭提示窗口的回调', err);
+                                    } 
                                 });
                             });
                             
