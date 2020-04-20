@@ -143,7 +143,7 @@
                         <li><a href="#handleValidate">handleValidate</a></li>
                         <li><a href="#onInit">onInit</a></li>
                         <li><a href="#onSubmit">onSubmit</a></li>
-                        <li><a href="#onHideMessage">onHideMessage</a></li>
+                        <li><a href="#onCloseMessage">onCloseMessage</a></li>
                         <li><a href="#verifyPhoneCountdown">verifyPhoneCountdown</a></li>
                     </ul>
                 </li>
@@ -824,7 +824,7 @@ var pointsStart = new Points({
                         <code class="language-html">
 
 &lt;script&gt;
-    // 创建挂载积分弹窗
+    // 创建挂载积分弹窗方法
     var demoModal = new Points.Modal({...parame});
     function creatPopDemo() {
         demoModal.create({
@@ -834,7 +834,7 @@ var pointsStart = new Points({
             createPoints();
         })
     }
-
+    // 创建积分模块方法
     function createPoints() {
         var point = new Points({
             targetId: &#x27;demo&#x27;,
@@ -864,7 +864,7 @@ var pointsStart = new Points({
                                 onCloseMessage: function(error){
                                     console.log('???', point)
                                     demoModal.create({
-                                        header: '参数：onCloseMessage', 
+                                        header: '属性：onCloseMessage', 
                                         article: '<div id="demo"></div>'
                                     }).then(function(){
                                         initPop();
@@ -873,7 +873,7 @@ var pointsStart = new Points({
                             })
                         };
                         document.getElementById('demo-onCloseMessage').onclick = function(){
-                            showDemo('参数：onCloseMessage', initPop);
+                            showDemo('属性：onCloseMessage', initPop);
                         }
                     </script>
                 </div>
