@@ -315,8 +315,16 @@ class Points {
 					handleErrorCode(err, this.errorCodeMap)
 						.catch(err => {
 							this.message.create({
-								article: err.message
-							});
+								header: '<h3>温馨提示</h3>',
+								article: err.message,
+								footer: '<button class="by-health-points-message_button">确定</button>'
+							})
+								.then(() => {
+									const btn = document.getElementById(this.message.state.id).querySelector('.by-health-points-message_button');
+									btn.onclick = () => {
+										this.message.hide();
+									};
+								});
 						});
 				}
 			});

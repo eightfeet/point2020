@@ -14,7 +14,10 @@ export const messageParame = {
 			fontStyle: 'normal'
 		},
 		content: {
-			maxWidth: '300px'
+			width: `${(640/31.25)}em`,
+			maxWidth: '640px',
+			backgroundColor: '#fff',
+			borderRadius: `${(30/31.25)}em`
 		}
 	}
 };

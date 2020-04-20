@@ -1,3 +1,6 @@
+@function fixpx($px) {
+  @return ($px/31.25)+em;
+}
 :global {
   .by-health-points-wrap {
     button,
@@ -43,16 +46,55 @@
   }
 
   .by-health-points-message_close{
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 1.5em;
-    height: 1.5em;
-    border-radius: 1em;
-    line-height: 1.5em;
-    text-align: center;
-    right: -2em !important;
-    &::before {
-      content: '\2715';
-      color: #fff;
+    background-image: url(./close.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: fixpx(32);
+    height: fixpx(32);
+    top: fixpx(40) !important;
+    right: fixpx(40) !important;
+  }
+
+  .by-health-points-message_header {
+    h3 {
+      margin: 0;
+      padding: 0;
     }
   }
+  
+  .by-health-points-message_article {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: fixpx(220);
+    max-width: fixpx(580);
+    width: fixpx(580);
+    margin: 0 auto;
+  }
+
+  .by-health-points-message_header {
+    min-height: fixpx(78);
+    text-align: center;
+    h3 {
+      padding-top: fixpx(50);
+    }
+  }
+
+  .by-health-points-message_footer {
+    height: fixpx(128);
+    text-align: center;
+  }
+
+  .by-health-points-message_button {
+    background-color: rgb(244, 180, 72);
+    width: fixpx(504);
+    height: fixpx(78);
+    font-size: 1em;
+    border-radius: fixpx(39);
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    color: #fff;
+  }
+  
 }
