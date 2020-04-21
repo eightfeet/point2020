@@ -97,7 +97,10 @@
         }
 
         #demo {
-            height: 300px;
+            width: 17.792em;
+            margin: 0 auto;
+            border-top: 1px solid #f2f2f2;
+            padding-top: 0.64em;
         }
 
         #demoa, #demob {
@@ -1156,14 +1159,35 @@ var pointsStart = new Points({
     var demoModal = new Modal({
         id: 'modaldemo',
         style: {
+            header: {
+                paddingBottom: '9.76em',
+                backgroundImage: 'url(https://upload-yyj.by-health.com/upload/images/20200421223719743.png)',
+                backgroundSize: '17.664em 9.408em',
+                paddingTop: '1.5em',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center 3em',
+                color: '#888'
+            },
             close: { 
-                width: '20px',
-                height: '20px',
-                backgroundColor: 'red'
+                width: '1.024em',
+                height: '1.024em',
+                top: '1.28em !important',
+                right: '1.28em !important',
+                backgroundImage: 'url(https://upload-yyj.by-health.com/upload/images/20200421225445185.png)',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '100% 100%'
+            },
+            article: {
+                paddingBottom: '1.92em'
             },
             content: {
                 borderRadius: '6px',
-                width: '300px'
+                width: '20.48em',
+                boxSizing: 'border-box',
+                maxWidth: '640px',
+                minHeight: '28em',
+                backgroundColor: '#fff',
+                borderRadius: '0.96em'
             }
         }
     });

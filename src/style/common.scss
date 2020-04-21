@@ -3,6 +3,8 @@
 }
 :global {
   .by-health-points-wrap {
+
+
     button,
     input {
       /* table elements 表格元素 */
@@ -13,6 +15,7 @@
       box-sizing: border-box;
       font-size: 1em;
     }
+
 
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -33,17 +36,89 @@
     button:focus {
       outline: 0;
     }
+
+    .by-health-points-button-scan {
+      &::before{
+        content: '\00A0';
+        vertical-align: text-bottom;
+        margin-right: fixpx(10);
+        background-image: url(./scan.svg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        overflow: hidden;
+        display: inline-block;
+        width: fixpx(25/0.8);
+        height: fixpx(25/0.8);
+      }
+    }
+
+    .by-health-points-button-sendverificationcode {
+      &:disabled{
+        background-color: #e8e8e8;
+        background-image: none;
+        color: #afafaf;
+      }
+    }
+
+    .by-health-points-button-submit{
+      background-color: rgb(242, 179, 82);
+      background-image: url(./bg.png);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      width: fixpx(500);
+      height: fixpx(80*1.124);
+      font-size: fixpx(32);
+      border-radius: fixpx(39*1.124);
+      color: #fff;
+      text-shadow: 0px fixpx(2) 0px rgba(233, 171, 76, 0.55);
+    }
   }
+  
 
   .by-health-points-phone-item,
   .by-health-points-verificationcode-item,
-  .by-health-points-verificationcode-item,
-  .by-health-points-antifakecode-item,
   .by-health-points-antifakecode-item,
   .by-health-points-submit-item {
-    padding: 10px;
-    background-color: #aaa;
+    font-style: normal;
   }
+
+.by-health-points-phone-item,
+.by-health-points-verificationcode-item,
+.by-health-points-antifakecode-item {
+  height: fixpx(88);
+  background-color: rgb(243, 243, 243);
+  border-radius: fixpx(44);
+  overflow: hidden;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: fixpx(24);
+  overflow: hidden;
+
+  input {
+    margin: 0 fixpx(40);
+    background-color: transparent;
+    -webkit-appearance: none;
+    font-size: fixpx(25);
+    flex: auto;
+    &::placeholder{
+      color: #b2b2b2;
+    }
+  }
+
+  button {
+      background-color: rgb(242, 179, 82);
+      background-image: url(./bg.png);
+      font-size: fixpx(25);
+      color: #fff;
+      flex: 0 fixpx(222/.8);
+      height: 100%;  
+  }
+  
+}
+
+
+
 
   .by-health-points-message_close{
     background-image: url(./close.svg);
@@ -86,15 +161,22 @@
   }
 
   .by-health-points-message_button {
-    background-color: rgb(244, 180, 72);
+    background-color: rgb(242, 179, 82);
+    background-image: url(./bg.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     width: fixpx(504);
-    height: fixpx(78);
-    font-size: 1em;
-    border-radius: fixpx(39);
-    border: none;
-    outline: none;
-    -webkit-appearance: none;
+    height: fixpx(80*1.124);
+    font-size: fixpx(32);
+    border-radius: fixpx(39*1.124);
     color: #fff;
+    text-shadow: 0px fixpx(2) 0px rgba(233, 171, 76, 0.55);
+    border: none;
+  }
+
+  .by-health-points-submit-item {
+    text-align: center;
+    padding-top: fixpx(40);
   }
   
 }
