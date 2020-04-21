@@ -178,5 +178,15 @@
     text-align: center;
     padding-top: fixpx(40);
   }
+
+  .by-health-points-phone-icon {
+    display: block;
+    width: fixpx(50);
+    height: fixpx(50);
+    margin-right: fixpx(18);
+    background-image: url(./icon.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
   
 }

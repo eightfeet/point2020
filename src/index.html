@@ -96,11 +96,16 @@
             }
         }
 
-        #demo {
+        #demo, #customMountDom {
             width: 17.792em;
             margin: 0 auto;
             border-top: 1px solid #f2f2f2;
             padding-top: 0.64em;
+        }
+
+        #customMountDom {
+            background-color: cadetblue;
+            padding: 10px;
         }
 
         #demoa, #demob {
@@ -187,6 +192,8 @@ var pointsStart = new Points({
 });
                         </code>
                     </pre>
+
+                    <div id="targetId"></div>
                 </div>
                     <br />
                     <h2 id="part2">Parame 创建实例参数</h2>
@@ -1202,6 +1209,18 @@ var pointsStart = new Points({
             }
         });
     }
+
+    new Points({
+        targetId: 'targetId',
+        data: {
+            phone: '13114876522', // 积分手机
+            antiFakeCode: '7898589819759507', // 16位产品防伪码
+            // ...其他参考中台api对应参数
+        },
+        onCloseMessage: function(err){
+            console.log('关闭提示窗口的回调', err);
+        } 
+    });
     
     document.querySelector('.menu').style.height = (window.innerHeight * .9) + 'px';
     hljs.initHighlightingOnLoad();
