@@ -144,7 +144,7 @@
                         <li><a href="#errorCodeMap">errorCodeMap</a></li>
                         <li><a href="#API">API</a></li>
                         <li><a href="#targetId">targetId</a></li>
-                        <li><a href="#id">id</a></li>
+                        <li><a href="#templateId">templateId</a></li>
                         <li><a href="#autoMount">autoMount</a></li>
                         <li><a href="#onScan">onScan</a></li>
                         <li><a href="#handleError">handleError</a></li>
@@ -561,9 +561,9 @@ var pointsStart = new Points({
                 </div>
                 <div>
                     <p>
-                        <b id="id">id</b> 
+                        <b id="templateId">templateId</b> 
                         <em>String</em> 
-                        <em>非必填</em> <br /><span id="demo-id" class="icon-demo">demo</span><br />
+                        <em>非必填</em> <br /><span id="demo-templateId" class="icon-demo">demo</span><br />
                         模板id（不填时系统将默认创建一个）<br />
                     </p>
                     <pre>
@@ -572,20 +572,20 @@ var pointsStart = new Points({
 &lt;script&gt;
     var points = new Points({
         targetId: &#x27;demo&#x27;,
-        id: &#x27;myId&#x27;,
+        templateId: &#x27;myId&#x27;,
     });
-    window.alert(document.getElementById(points.id).id);
+    window.alert(document.getElementById(points.templateId).id);
 &lt;/script&gt;
                         </code>
                     </pre>
                     <script>
-                        document.getElementById('demo-id').onclick = function(){
-                            showDemo('参数：id', function(){
+                        document.getElementById('demo-templateId').onclick = function(){
+                            showDemo('参数：templateId', function(){
                                 var points = new Points({
                                     targetId: 'demo',
-                                    id: 'myId',
+                                    templateId: 'myId',
                                 });
-                                window.alert(document.getElementById(points.id).id);
+                                window.alert(document.getElementById(points.templateId).id);
                             });
                         }
                     </script>
@@ -1210,7 +1210,7 @@ var pointsStart = new Points({
         });
     }
 
-    new Points({
+    window.pointstest = new Points({
         targetId: 'targetId',
         data: {
             phone: '13114876522', // 积分手机

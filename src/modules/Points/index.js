@@ -82,7 +82,7 @@ class Points {
 		// 挂载Dom
 		this.target = document.getElementById(config.targetId) || document.body;
 		// 模块ID
-		this.id = config.id || pointsId;
+		this.templateId = config.templateId || pointsId;
 		// 历史数据
 		this.prevData = {
 			request: null,
@@ -171,7 +171,7 @@ class Points {
 		if (!isCustomTemplate) {
 			// 创建模板时数据直接写入到模板
 			createTemplate(
-				this.id,
+				this.templateId,
 				(document.getElementById(targetId) || this.target),
 				this.disabledPhone,
 				this.hidePhone,
