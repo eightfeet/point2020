@@ -1,6 +1,6 @@
 {
   "name": "@byhealth/points",
-  "version": "3.0.12",
+  "version": "3.0.13",
   "description": "",
   "main": "./dist/points.js",
   "files": [
