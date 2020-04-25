@@ -27,7 +27,7 @@ export default ({disabledPhone, verifyPhone, hidePhone, data, buttonText, tipsTe
         </div>` : ''}
         <div class="${prefix}-antifakecode-item">
             <input class="${prefix}-antifakecode" type="tel" id="${antiFakeCode}" value="${data.antiFakeCode || ''}" maxlength="16" placeholder="输入16位瓶盖防伪码" />
-            ${(checkEnv() !== 1 || checkEnv() === 2 || checkEnv() === 3) ? `<button class="${prefix}-button-scan" id="${scan}">扫描防伪码</button>` : ''}
+            ${(checkEnv() === 1 || checkEnv() === 2 || checkEnv() === 3) ? `<button class="${prefix}-button-scan" id="${scan}">扫描防伪码</button>` : ''}
         </div>
         <div class="${prefix}-submit-item">
             <button class="${prefix}-button-submit" id="${submit}">提交</button>
