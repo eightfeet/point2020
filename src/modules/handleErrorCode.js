@@ -24,10 +24,21 @@ export default (error, errorCode) => new Promise((resolve, reject) => {
 	});
 		
 	if (proxyCode.includes(error.code)) {
-		reject({
-			code: error.code,
-			message: operateCode[error.code]
-		});
+		const content = operateCode[error.code];
+		let errResult = {};
+		if (isObject(content)) {
+			errResult = {
+				code: error.code,
+				message: operateCode[error.code].message,
+				title: operateCode[error.code].title
+			};
+		} else {
+			errResult = {
+				code: error.code,
+				message: operateCode[error.code]
+			};
+		}
+		reject(errResult);
 	} else {
 		reject(error);
 	}

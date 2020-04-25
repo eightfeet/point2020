@@ -52,6 +52,8 @@ const showTipsEl = (tipsConEl) => {
 	showTips = true;
 	tipsConEl.style.display = 'block';
 };
+// 是否被卸载
+let isUnmount = null;
 
 class PointsError extends Error {
 	constructor(message, code) {
@@ -111,8 +113,8 @@ class Points {
 			response: null
 		};
 		// 创建loading和message
-		this.message = new Modal(config.messageParame || messageParame);
 		this.loading = new Loading(config.loadingParame || loadingParame);
+		this.message = new Modal(config.messageParame || messageParame);
 		// 扫码回调
 		this.onScan = config.onScan;
 		// 异常处理
@@ -180,6 +182,7 @@ class Points {
 	 * 重置数据代理与监听
 	 */
 	mount = (targetId, map) =>{
+		isUnmount = false;
 		if (isObject(map)) {
 			isCustomTemplate = true;
 			this.elementNodeMappingField = {
@@ -348,6 +351,10 @@ class Points {
 	}
 
 	handleErrorMessage = err => {
+		// 卸载后不对任何结果处理
+		if (isUnmount === true) {
+			return;
+		}
 		if (typeof this.onCloseMessage === 'function') {
 			this.message.state.onCancel = () => {
 				this.onCloseMessage({
@@ -356,8 +363,9 @@ class Points {
 				});
 			};
 		}
+		let title = err.title === false ? '' : `<h3>${err.title || '温馨提示'}</h3>`;
 		this.message.create({
-			header: '<h3>温馨提示</h3>',
+			header: title,
 			article: err.message,
 			footer: '<button class="by-health-points-message_button">确定</button>'
 		})
@@ -409,6 +417,25 @@ class Points {
 				this.loading.hide();
 				this.handleErrorMessage(err);
 			});
+	}
+
+	/**
+	 * mount
+	 */
+	unmount = () => {
+		isUnmount = true;
+		// 关闭message
+		const mseeageDom =  document.getElementById(this.message.state.id);
+		if (mseeageDom) {
+			this.message.hide();
+		}
+		// 移除历史监听事件
+		if (this.listenerHistory) {
+			removeListener(this.listenerHistory);
+		}
+		if (!isCustomTemplate) {
+			document.getElementById(this.templateId).parentElement.removeChild(document.getElementById(this.templateId));
+		}
 	}
 }
 
