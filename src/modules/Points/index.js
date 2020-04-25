@@ -31,6 +31,28 @@ const dataTemp = {};
 
 let isCustomTemplate = false;
 
+let showTips = false;
+const tipsToggle = (tipsConEl) => () => {
+	if (!tipsConEl) return;
+	if (showTips) {
+		hideTipsEl(tipsConEl);
+	} else {
+		showTipsEl(tipsConEl);
+	}
+};
+
+export const hideTipsEl = (tipsConEl) => {
+	if (!tipsConEl) return;
+	showTips = false;
+	tipsConEl.style.display = 'none';
+};
+
+const showTipsEl = (tipsConEl) => {
+	if (!tipsConEl) return;
+	showTips = true;
+	tipsConEl.style.display = 'block';
+};
+
 class PointsError extends Error {
 	constructor(message, code) {
 		super(message, code);
@@ -170,16 +192,17 @@ class Points {
 		this.data = Object.create(data);
 		if (!isCustomTemplate) {
 			// 创建模板时数据直接写入到模板
-			createTemplate(
-				this.templateId,
-				(document.getElementById(targetId) || this.target),
-				this.disabledPhone,
-				this.hidePhone,
-				(this.verifyPhone || this.bindPhone),
-				this.data,
-				this.verifyPhoneCountdown.buttonText,
-				this.elementNodeMappingField,
-			);
+			createTemplate({
+				id: this.templateId,
+				target: (document.getElementById(targetId) || this.target),
+				disabledPhone: this.disabledPhone,
+				hidePhone: this.hidePhone,
+				verifyPhone: (this.verifyPhone || this.bindPhone),
+				data: this.data,
+				buttonText: this.verifyPhoneCountdown.buttonText,
+				elementNodeMappingField: this.elementNodeMappingField,
+				tipsText: 'tepsText'
+			});
 		} else {
 			// 自定义模板时需要根据映射关系回填数据
 			backfill(this.elementNodeMappingField, this.data);
@@ -211,7 +234,8 @@ class Points {
 		this.listenerHistory = eventListener(data, mapData, {
 			scan: this.scan,
 			sendVerificationCode: this.sendVerificationCode,
-			submit: this.submit
+			submit: this.submit,
+			tips: tipsToggle(document.getElementById(`${this.elementNodeMappingField.tips}-con`))
 		});
 	}
 

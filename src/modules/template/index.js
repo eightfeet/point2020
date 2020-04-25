@@ -6,19 +6,21 @@ export const nodeMap = (tag) => ({
 	antiFakeCode: `${tag}-antiFakeCode`,
 	scan: `${tag}-scan`,
 	sendVerificationCode: `${tag}-sendVerificationCode`,
-	submit: `${tag}-submit`
+	submit: `${tag}-submit`,
+	tips: `${tag}-tips`
 });
 
 const is_mobi = navigator.userAgent.toLowerCase().match(/(ipod|iphone|android|coolpad|mmp|smartphone|midp|wap|xoom|symbian|j2me|blackberry|wince)/i) !== null;
 const width = window.document.documentElement.clientWidth;
 const prefix = 'by-health-points';
 
-export default (disabledPhone, verifyPhone, hidePhone, data, buttonText, elementNodeMappingField) =>{
-	const { phone, verificationCode, antiFakeCode, scan, sendVerificationCode, submit} = elementNodeMappingField;
+export default ({disabledPhone, verifyPhone, hidePhone, data, buttonText, tipsText, elementNodeMappingField}) =>{
+	const { phone, verificationCode, antiFakeCode, scan, sendVerificationCode, submit, tips} = elementNodeMappingField;
 	return `<div class="${prefix}-wrap" style="font-size:${is_mobi ? (31.25 * (width / 750)) : 13}px">
-        ${hidePhone ? '' : `<div class="${prefix}-phone-item">
-            <input class="${prefix}-phone" type="tel" value="${data.phone || ''}" ${disabledPhone ? 'disabled' : ''} id="${phone}" maxlength="11" placeholder="输入手机号码" /><span class="${prefix}-phone-icon"></span>
-        </div>`}
+        ${hidePhone ? '' : `<div class="${prefix}-phone-item-wrap"><div class="${prefix}-phone-item">
+            <input class="${prefix}-phone" type="tel" value="${data.phone || ''}" ${disabledPhone ? 'disabled' : ''} id="${phone}" maxlength="11" placeholder="输入手机号码" />
+            <div id="${tips}" class="${prefix}-phone-icon"></div>
+        </div> <div id="${tips}-con" class="${prefix}-phone-tips">${tipsText}</div></div>`}
         ${verifyPhone ? `<div class="${prefix}-verificationcode-item">
             <input class="${prefix}-verificationcode" type="tel" id="${verificationCode}"  value="${data.verificationCode || ''}" maxlength="4" placeholder="输入验证码" />
             <button class="${prefix}-button-sendverificationcode" id="${sendVerificationCode}">${buttonText || '获取验证码'}</button>

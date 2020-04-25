@@ -42,7 +42,7 @@
         content: '\00A0';
         vertical-align: text-bottom;
         margin-right: fixpx(10);
-        background-image: url(./scan.svg);
+        background-image: url(./scan.png);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         overflow: hidden;
@@ -85,6 +85,7 @@
 .by-health-points-phone-item,
 .by-health-points-verificationcode-item,
 .by-health-points-antifakecode-item {
+  position: relative;
   height: fixpx(88);
   background-color: rgb(243, 243, 243);
   border-radius: fixpx(44);
@@ -121,7 +122,7 @@
 
 
   .by-health-points-message_close{
-    background-image: url(./close.svg);
+    background-image: url(./close.png);
     background-size: contain;
     background-repeat: no-repeat;
     width: fixpx(32);
@@ -174,6 +175,10 @@
     border: none;
   }
 
+  .by-health-points-phone-item-wrap {
+    position: relative;
+  }
+
   .by-health-points-submit-item {
     text-align: center;
     padding-top: fixpx(40);
@@ -187,6 +192,35 @@
     background-image: url(./icon.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
+  }
+
+  .by-health-points-phone-tips {
+    position: absolute;
+    bottom: fixpx(88/0.832);
+    display: none;
+    right: 0;
+    padding: fixpx(15) fixpx(20);
+    border-radius: fixpx(10);
+    font-size: fixpx(26);
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.74);
+    
+    &::after{
+      content: '\00A0';
+      position: absolute;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 0;
+      right: fixpx(40);
+      font-size: 1em;
+      margin-left: -6px;
+      height: 6px;
+      border-left: 6px solid transparent;
+      border-right:6px solid transparent;
+      border-top:8px solid rgba(0, 0, 0, 0.74);
+      bottom: -14px;
+    }
   }
   
 }

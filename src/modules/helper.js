@@ -1,5 +1,6 @@
 import createHtml from './template';
 import validate from 'validate-by-health';
+import { hideTipsEl } from './Points';
 
 /**
  * 创建默认模板
@@ -8,7 +9,7 @@ import validate from 'validate-by-health';
  * @param { Boolean } disabledPhone 禁用手机
  * @param { Boolean } verifyPhone 是否验证手机
  */
-export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone, data, buttonText, elementNodeMappingField) => {
+export const createTemplate = ({id, target, disabledPhone, hidePhone, verifyPhone, data, buttonText, tipsText, elementNodeMappingField}) => {
 	// 移除
 	const hasIdObject = document.getElementById(id);
 	if (hasIdObject) hasIdObject.parentNode.removeChild(hasIdObject);
@@ -18,7 +19,15 @@ export const createTemplate = (id, target, disabledPhone, hidePhone, verifyPhone
 	div.id = id;
 	target.appendChild(div);
 	// 重定rootNode内容注入模板
-	div.innerHTML = createHtml(disabledPhone, verifyPhone, hidePhone, data, buttonText, elementNodeMappingField);
+	div.innerHTML = createHtml({
+		disabledPhone,
+		verifyPhone,
+		hidePhone,
+		data,
+		buttonText,
+		tipsText,
+		elementNodeMappingField
+	});
 };
 
 /**
@@ -59,9 +68,12 @@ export const intercept = (data, elementNodeMappingField, dataTemp) =>  Object.ke
  */
 export const eventListener = (data, elementNodeMappingField, operation) => {
 	const listener = {};
-	const {scan, sendVerificationCode, submit} = operation;
+	const {scan, sendVerificationCode, submit, tips} = operation;
 	
 	listener.click = e => {
+		const TipsEl = document.getElementById(`${elementNodeMappingField.tips}-con`);
+		hideTipsEl(TipsEl);
+
 		Object.keys(elementNodeMappingField).forEach(key => {
 			if (
 				e.target.id === elementNodeMappingField[key] &&
@@ -90,6 +102,14 @@ export const eventListener = (data, elementNodeMappingField, operation) => {
 						// 创建点击监听提交按钮事件
 						if (typeof submit === 'function') {
 							submit();
+						}
+						break;
+					case 'tips':
+						// 创建点击监toggle提示型文案
+						if (typeof tips === 'function') {
+							// 组织冒泡避免tips被body关闭
+							e.stopPropagation();
+							tips();
 						}
 						break;
 					default:
