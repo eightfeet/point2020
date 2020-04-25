@@ -228,7 +228,7 @@ var pointsStart = new Points({
                                     },
                                     onCloseMessage: function(err){
                                         console.log('关闭提示窗口的回调', err);
-                                    } 
+                                    }
                                 });
                             });
                             
@@ -472,6 +472,14 @@ var pointsStart = new Points({
         errorCodeMap: {
             [-1000]: &#x27;修改了数据验证错误信息&#x27;
         },
+        /* 以Object的形式传入
+        errorCodeMap: {
+            [-1000]: {
+                message: &#x27;修改了数据验证错误信息&#x27;,
+                title: &#x27;设置标题文字&#x27; // {title: false} 当title === false时，隐藏标题
+            }
+        },
+        */
     });
 &lt;/script&gt;
                         </code>
