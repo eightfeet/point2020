@@ -1,6 +1,6 @@
 {
-  "name": "@eightfeet/points",
-  "version": "2.0.0",
+  "name": "@byhealth/points",
+  "version": "3.0.10",
   "description": "",
   "main": "./dist/points.js",
   "files": [
